@@ -1,0 +1,22 @@
+import './App.css'
+
+function App() {
+
+  const name = 'Leandro';
+  const newName = name.toUpperCase()
+  const url = 'https://placehold.co/150'
+
+  const soma = (n1,n2) => n1 + n2 
+
+  return (
+    <div className="App">
+      <h1>Olá React!</h1>
+      <p>Meu primeiro App</p>
+      <p>{newName}</p>
+      <p>Soma: {soma(2,2)}</p>
+      <img src={url} alt="imagem teste" />
+    </div>
+  )
+}
+
+export default App
