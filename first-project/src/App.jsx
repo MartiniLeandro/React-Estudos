@@ -13,11 +13,11 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Olá React!</h1>
+      {/*<h1>Olá React!</h1>
       <p>Meu primeiro App</p>
       <p>{newName}</p>
       <p>Soma: {soma(2,2)}</p>
-      <img src={url} alt="imagem teste" />
+      <img src={url} alt="imagem teste" />*/}
       <HelloWorld/>
       <SayMyName nome = {name}/>
       <Pessoa foto={url} nome={name} idade='20' profissao="programador" />
