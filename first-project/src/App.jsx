@@ -2,6 +2,7 @@ import './App.css'
 import HelloWorld from './components/HelloWorld'
 import SayMyName from './components/SayMyName';
 import Pessoa from './components/Pessoa';
+import List from './components/List';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
       <HelloWorld/>
       <SayMyName nome = {name}/>
       <Pessoa foto={url} nome={name} idade='20' profissao="programador" />
+      <List/>
     </div>
   )
 }
