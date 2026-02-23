@@ -1,4 +1,6 @@
 import './App.css'
+import HelloWorld from './components/HelloWorld'
+import Frase from './components/Frase';
 
 function App() {
 
@@ -15,6 +17,7 @@ function App() {
       <p>{newName}</p>
       <p>Soma: {soma(2,2)}</p>
       <img src={url} alt="imagem teste" />
+      <HelloWorld/>
     </div>
   )
 }
