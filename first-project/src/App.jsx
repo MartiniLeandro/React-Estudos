@@ -1,6 +1,7 @@
 import './App.css'
 import HelloWorld from './components/HelloWorld'
-import Frase from './components/Frase';
+import SayMyName from './components/SayMyName';
+import Pessoa from './components/Pessoa';
 
 function App() {
 
@@ -18,6 +19,8 @@ function App() {
       <p>Soma: {soma(2,2)}</p>
       <img src={url} alt="imagem teste" />
       <HelloWorld/>
+      <SayMyName nome = {name}/>
+      <Pessoa foto={url} nome={name} idade='20' profissao="programador" />
     </div>
   )
 }
