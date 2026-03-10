@@ -8,18 +8,18 @@ interface infoFuel {
 }
 
 function App(){
-    const [alcool, setAlcool] = useState('')
-    const [gasolina, setGasolina] = useState('')
+    const [alcoolInput, setAlcoolInput] = useState<number>(0)
+    const [gasolinaInput, setGasolinaInput] = useState<number>(0)
     const [infoFuel, setInfoFuel] = useState<infoFuel>()
     const [showResult, setShowResult] = useState(false)
 
     function calcularCombustivel(){
       setShowResult(true)
-        const calculoCombustivel:number = Number(alcool) / Number(gasolina);
+        const calculoCombustivel = alcoolInput / gasolinaInput;
         if(calculoCombustivel < 0.7) {
-            setInfoFuel({alcool: Number(alcool), gasolina: Number(gasolina), melhorCusto: "Álcool"})
+            setInfoFuel({alcool: (alcoolInput), gasolina: (gasolinaInput), melhorCusto: "Álcool"})
         }else {
-            setInfoFuel({alcool: Number(alcool), gasolina: Number(gasolina), melhorCusto: "Gasolina"})
+            setInfoFuel({alcool: (alcoolInput), gasolina: (gasolinaInput), melhorCusto: "Gasolina"})
         }
         
     }
@@ -29,10 +29,10 @@ function App(){
           <img src="logo.png" alt="" className="image"/>
           <h2>Qual a melhor opção?</h2>
           <div className="inputs">
-            <p>Álcool (preço por litro)</p>
-            <input className="input" type="number" value={alcool} onChange={(e) => setAlcool(e.target.value)}/>
-            <p>Gasolina (preço por litro)</p>
-            <input className="input" type="number" value={gasolina} onChange={(e) => setGasolina(e.target.value)}/>
+            <p className="info-alcool">Álcool (preço por litro)</p>
+            <input className="input" type="number" onChange={(e) => setAlcoolInput(Number(e.target.value))}/>
+            <p className="info-gasolina">Gasolina (preço por litro)</p>
+            <input className="input" type="number" onChange={(e) => setGasolinaInput(Number(e.target.value))}/>
             <button className="btn" onClick={calcularCombustivel}>Calcular</button>
           </div>
 

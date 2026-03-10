@@ -44,3 +44,7 @@
 .image{
     width: 200px;
 }
+
+.info-alcool,.info-gasolina{
+    margin: 8px 0px;
+}
