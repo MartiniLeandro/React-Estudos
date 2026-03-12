@@ -1,8 +1,10 @@
+import Estudos from "./components/EstudosHtmlCss";
+
 {/*import Header from "./components/Header";
 import Aluno from "./components/Aluno";
 import Footer from "./components/Footer";
-import UseState from "./components/UseState";*/}
-import ListasFormularios from "./components/ListasFormularios";
+import UseState from "./components/UseState";
+import ListasFormularios from "./components/ListasFormularios";*/}
 
 function App(){
   return (
@@ -13,8 +15,9 @@ function App(){
       <Aluno nome = "Gabriel martini" idade={22}/>
       <Aluno nome = "Leandro martini" idade={15}/>
       <Footer/>
-      <UseState/>*/}
-      <ListasFormularios/>
+      <UseState/>
+      <ListasFormularios/>*/}
+      <Estudos/>
     </div>
   )
 }

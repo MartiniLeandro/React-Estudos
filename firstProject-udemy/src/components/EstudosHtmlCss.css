@@ -1,0 +1,48 @@
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    box-sizing: border-box; 
+    width: 100px; /*com o box-sizing: border-box, a width sempre vai ser 100px, independente do padding ou border que for adicionado */
+    height: 100px;
+    border: 10px solid red;
+}
+
+.content{
+    border: 5px green solid;
+}
+
+.rem{
+    font-size: 2rem /*o rem utiliza como referência o valor da tag <html>, ou seja, a configuração do navegador*/
+}
+
+.div-em{
+    font-size: 20px;
+}
+
+.em{
+    font-size: 2em; /*o em utiliza como referência o valor da tag pai, ou seja, neste caso vai pegar o valor da .div-em | 2em = 2 X 20px = 40px*/
+}
+
+.viewport{
+    border: 10px solid red;
+    width: 80vw;
+    height: 30vh; /*o vh e vw são valores de acordo com o espaço total da tela 30vh = 30% da tela | 80vw = 80% da tela*/
+    min-width: 50vw;
+    min-height: 10vh;
+}
+
+.porcentagem {
+    border: 10px solid green;
+    width: 200px;
+    height: 100px;
+}
+
+.porcentagem div {
+    border: 4px solid blue;
+    width: 50%; /*utiliza o valor do pai como referência | 200px -> 100px*/
+}
+
+
+
