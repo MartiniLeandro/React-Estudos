@@ -4,6 +4,7 @@ import './EstudosHtmlCss.css'
 
 function Estudos(){
     return(
+        /* 
         <div>
             <h2>Box-Sizing</h2>
             <div className="container">
@@ -24,7 +25,26 @@ function Estudos(){
                 <div>div utilizando porcentagem</div>
             </div>
         </div>
+        */
+        <div className="card-container">
+        {/* O Selo precisa estar dentro do container para o absolute funcionar */}
+        <span className="badge">20% OFF</span>
         
+        <div className="image-placeholder">
+            <div className="img-mock">Imagem</div>
+        </div>
+
+        <div className="card-body">
+            <h3 className="title">Mouse Gamer RGB</h3>
+            <p className="description">
+            Alta precisão e ergonomia para suas partidas.
+            </p>
+            
+            <button className="buy-button">
+            Comprar
+            </button>
+        </div>
+        </div>
     )
 }
 

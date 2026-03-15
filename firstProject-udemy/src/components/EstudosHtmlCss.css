@@ -45,4 +45,77 @@
 }
 
 
+/* 1. O Reset: Essencial para o border-box funcionar em tudo */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
+:root {
+  font-size: 16px; /* Base para o rem */
+}
+
+.card-container {
+  position: relative;     /* Âncora para o selo absolute */
+  width: 300px;           /* Com border-box, o total será sempre 300px */
+  padding: 1.5rem;        /* 24px de respiro interno */
+  border: 2px solid #333;
+  border-radius: 8px;
+  background-color: #fff;
+  margin: 50px auto;      /* Centraliza o card na tela */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.badge {
+  position: absolute;     /* Sai do fluxo e obedece ao .card-container */
+  top: -10px;             /* "Sobe" para fora do card */
+  right: -10px;           /* "Sai" para a direita */
+  background-color: #e74c3c;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  font-weight: bold;
+  font-size: 0.8rem;      /* Relativo ao HTML (12.8px) */
+  border-radius: 4px;
+}
+
+.image-placeholder {
+  width: 100%;            /* Ocupa 100% dos 300px (menos o padding) */
+  height: 150px;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.25rem;     /* 20px - Escala com o navegador */
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.description {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.buy-button {
+  width: 100%;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  
+  /* O PULO DO GATO: */
+  font-size: 1rem;        /* Experimente mudar para 1.5rem e veja o padding crescer */
+  padding: 0.8em 1.2em;   /* Padding elástico baseado no tamanho da fonte do botão */
+  transition: background 0.2s;
+}
+
+.buy-button:hover {
+  background-color: #219150;
+}
