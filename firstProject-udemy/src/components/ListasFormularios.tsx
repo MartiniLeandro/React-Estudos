@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 
 function ListasFormularios(){
-    const [tasksList, setTasksList] = useState([
-        'Estudar React',
-        'Academia',
-        'Faculdade'
-    ])
+    const [tasksList, setTasksList] = useState<string[]>([])
     const [taskInput, setTaskInput] = useState("")
+
+    useEffect(() => {
+        const tasksSalvas = localStorage.getItem("@cursoreact")
+        if(tasksSalvas){
+            setTasksList(JSON.parse(tasksSalvas))
+        }
+    
+    }, [])
 
     function adicionarTarefa(){
         if(!taskInput){
@@ -17,11 +21,13 @@ function ListasFormularios(){
         }
         setTasksList([...tasksList, taskInput])
         setTaskInput("")
+        localStorage.setItem("@cursoreact", JSON.stringify([...tasksList, taskInput]))
     }
 
     function deletarTarefa(item:string){
         const novoArray = tasksList.filter((task) => task !==  item)
         setTasksList(novoArray)
+        localStorage.setItem("@cursoreact",JSON.stringify(novoArray))
     }
 
     return(
