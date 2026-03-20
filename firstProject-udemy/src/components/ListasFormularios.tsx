@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 
 
@@ -22,6 +22,10 @@ function ListasFormularios(){
             return;
         }
         localStorage.setItem("@cursoreact", JSON.stringify(tasksList))
+    }, [tasksList])
+
+    const totalTask = useMemo(() => {
+        return tasksList.length
     }, [tasksList])
 
     function adicionarTarefa(){
@@ -51,6 +55,8 @@ function ListasFormularios(){
             <input type="text" placeholder="adicionar tarefa" value={taskInput} onChange={e => setTaskInput(e.target.value)} ref={inputRef}/>
             <button onClick={adicionarTarefa}>adicionar</button>
             <hr />
+            <strong>Você tem {totalTask} tarefas!!</strong>
+            <br/><br/>
             {tasksList.map((task,index) => (
                 <section key={index}>
                     <span>{index + 1}- {task}</span>
