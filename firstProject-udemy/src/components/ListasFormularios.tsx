@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 
 
 
@@ -28,26 +28,28 @@ function ListasFormularios(){
         return tasksList.length
     }, [tasksList])
 
-    function adicionarTarefa(){
-        if(!taskInput){
-            alert("Preencha o nome da sua tarefa")
-            return;
-        }
-        setTasksList([...tasksList, taskInput])
-        setTaskInput("")
-    }
+    const adicionarTarefa = useCallback(() => {
+    if(!taskInput){
+                alert("Preencha o nome da sua tarefa")
+                return;
+            }
+            setTasksList([...tasksList, taskInput])
+            setTaskInput("")
+    },[taskInput,tasksList]) 
+     
 
-    function deletarTarefa(item:string){
+    
+    const deletarTarefa = useCallback((item:string) => {
         const novoArray = tasksList.filter((task) => task !==  item)
         setTasksList(novoArray)
-    }
+    }, [tasksList])    
 
-    function editarTask(){
-        if(inputRef.current){
+    const editarTask = useCallback(() => {
+            if(inputRef.current){
             inputRef.current.placeholder = "Editar tarefa"
             inputRef.current.focus()
         }
-    }
+    }, [inputRef]) 
 
     return(
         <div>
