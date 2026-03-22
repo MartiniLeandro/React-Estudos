@@ -1,4 +1,5 @@
 import ListasFormularios from "./components/ListasFormularios";
+import RenderizacaoCondicional from "./components/RenderizacaoCondicional";
 
 {/*import Header from "./components/Header";
 import Aluno from "./components/Aluno";
@@ -19,6 +20,8 @@ function App(){
       <UseState/>
       <Estudos/>*/}
       <ListasFormularios/>
+      <hr />
+      <RenderizacaoCondicional/>
     </div>
   )
 }
