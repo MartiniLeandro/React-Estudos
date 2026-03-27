@@ -1,16 +1,9 @@
-.main{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .container{
   width: 100%;
-}
-
-.container{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 40%;
 }
 
 .img{
@@ -36,6 +29,10 @@
   cursor: pointer;
 }
 
+.btn-category:active {
+  background-color: rgb(201, 201, 201);
+}
+
 .btn-frase{
   padding: 10px 15px;
   margin-top: 20px;
@@ -46,16 +43,24 @@
   cursor: pointer;
 }
 
+.btn-frase:active {
+  background-color: #1b7bb3;
+}
+
 .content {
   background-color: #fff;
-  padding: 20px;
+  padding: 30px;
   margin-top: 15px;
   border-radius: 5px;
-  width: 100%;
 }
 
 .frase-content{
   background-color: #fff;
   color: rgb(160, 104, 0);
   font-weight: 600;
+  font-style: italic;
+}
+
+.checked{
+  background-color: red;
 }

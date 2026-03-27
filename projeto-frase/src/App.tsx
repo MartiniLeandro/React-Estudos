@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import logo from './assets/logo.png'
 
@@ -12,7 +12,14 @@ function App() {
     frases:string[]
   }
 
+  useEffect(() => {
+    const fraseSalve = localStorage.getItem("@frase")
+    if(fraseSalve){
+      setFrase(JSON.parse(fraseSalve))
+    }
+  }
   
+  ,[]) 
 
   const allFrases:frases[] = [
     {
@@ -42,36 +49,37 @@ function App() {
 
   function setCategoria(frases:string[]){
     setFrasesCategoria(frases);
-    console.log(frasesCategoria)
-  }
+    }
 
   function mostrarFrase(){
+    if(frasesCategoria == undefined){
+      alert("teste")
+    }
     let fraseEscolhida = ''
     do{
       const indiceAleatorio = Math.floor(Math.random() * frasesCategoria.length);
       fraseEscolhida = frasesCategoria[indiceAleatorio];
     }while(fraseEscolhida == frase)
+    localStorage.setItem("@frase",JSON.stringify(fraseEscolhida))
     setFrase(fraseEscolhida);
     console.log(frase)  
   }
 
 
   return (
-    <main className='main'> 
-      <div className="container">
-        <img src={logo} alt="" className='img'/>
-        <h2 className='title'>Categorias</h2>
-        <div className="btns">
-          {allFrases.map((item) => (
-            <button key={item.id} className='btn-category' onClick={() => setCategoria(item.frases)}>{item.nome}</button>
-          ))}
-        </div>
-        <button className='btn-frase' onClick={() => mostrarFrase()}>Gerar Frase</button>
-        <div className="content">
-          <p className='frase-content'>"{frase}"</p>
-        </div>
+    <div className="container">
+      <img src={logo} alt="" className='img'/>
+      <h2 className='title'>Categorias</h2>
+      <div className="btns">
+        {allFrases.map((item) => (
+          <button key={item.id} className='btn-category' onClick={() => setCategoria(item.frases)}>{item.nome}</button>
+        ))}
       </div>
-    </main>
+      <button className='btn-frase' onClick={() => mostrarFrase()}>Gerar Frase</button>
+      <div className="content">
+        <p className='frase-content'>"{frase}"</p>
+      </div>
+    </div>
   )
 }
 
