@@ -6,6 +6,9 @@ export function Layout(){
         <>
             <Header/>
             <Outlet/>
+            <footer>
+                <span>Todos direitos reservados @2024</span>
+            </footer>
         </>
     )
 }
