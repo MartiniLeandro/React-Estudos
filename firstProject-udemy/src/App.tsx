@@ -1,3 +1,4 @@
+import AsyncTraining from "./components/AsyncTraining";
 import ListasFormularios from "./components/ListasFormularios";
 import RenderizacaoCondicional from "./components/RenderizacaoCondicional";
 
@@ -22,6 +23,8 @@ function App(){
       <ListasFormularios/>
       <hr />
       <RenderizacaoCondicional/>
+      <hr/>
+      <AsyncTraining/>
     </div>
   )
 }
