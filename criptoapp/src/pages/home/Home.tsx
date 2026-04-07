@@ -65,7 +65,7 @@ function Home() {
         <table className={styles.tableCripto}>
               <thead>
                 <tr>
-                  <th scope='col'>Moeda</th>
+                  <th scope='col' style={{textAlign: 'center'}}>Moeda</th>
                   <th scope='col'>Valor mercado</th>
                   <th scope='col'>Preço</th>
                   <th scope='col'>Volume</th>
@@ -74,12 +74,17 @@ function Home() {
               </thead>
               <tbody>
                 {criptosData.map((cripto) => (
-                  <tr>
-                    <td>{cripto.name} | {cripto.symbol}</td>
+                  <tr className={styles.infoCripto}>
+                    <td>
+                      <div className={styles.moedaInfo}>
+                        <img src={`https://assets.coincap.io/assets/icons/${cripto.symbol.toLowerCase()}@2x.png`} alt="" />
+                        <p style={{fontWeight: 'bolder'}}>{cripto.name} | {cripto.symbol}</p>
+                      </div>
+                      </td>
                     <td>{cripto.marketCapUsd}</td>
                     <td>{cripto.priceUsd}</td>
                     <td>{cripto.volumeUsd24Hr}</td>
-                    <td>{cripto.changePercent24Hr}</td>
+                    <td className={Number(cripto.changePercent24Hr) < 0 ? styles.changeBelow : styles.changeHigh} style={{fontWeight: 'bolder'}}>{cripto.changePercent24Hr}</td>
                   </tr>
                 ))}
               </tbody>

@@ -20,3 +20,67 @@
 .formButton{
     background: transparent;
 }
+
+.tableCripto {
+  width: 100%;
+  border-collapse: collapse; 
+  margin: 20px -10px;
+  color: #fff;
+}
+
+.tableCripto th, 
+.tableCripto td {
+  padding: 14px;
+  text-align: center; 
+}
+
+.tableCripto th:first-child,
+.tableCripto td:first-child {
+  text-align: left;
+  width: 1%; 
+  white-space: nowrap; 
+  padding-right: 50px;
+}
+
+.tableCripto th {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: #fff;
+}
+
+
+.infoCripto td {
+  background-color: #1e1f27;
+  margin-bottom: 10px;
+  border-bottom: 8px solid #18171c;
+  border-radius: 5px;
+}
+
+.infoCripto td:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+.infoCripto td:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.moedaInfo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.moedaInfo img {
+    width: 25px;
+}
+
+.changeBelow{
+    color: red;
+}
+
+.changeHigh{
+    color: green;
+}
