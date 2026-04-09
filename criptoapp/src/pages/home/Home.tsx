@@ -1,6 +1,7 @@
 import { BsSearch } from 'react-icons/bs';
 import styles from './Home.module.css'
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 
 function Home() {
@@ -77,8 +78,10 @@ function Home() {
                   <tr className={styles.infoCripto}>
                     <td>
                       <div className={styles.moedaInfo}>
+                        <Link to={`details/${cripto.name}`} className={styles.linkCripto}>
                         <img src={`https://assets.coincap.io/assets/icons/${cripto.symbol.toLowerCase()}@2x.png`} alt="" />
                         <p style={{fontWeight: 'bolder'}}>{cripto.name} | {cripto.symbol}</p>
+                        </Link>
                       </div>
                       </td>
                     <td>{cripto.marketCapUsd}</td>
