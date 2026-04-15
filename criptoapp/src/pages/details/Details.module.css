@@ -1,0 +1,27 @@
+.mainCripto{
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.criptoData{
+    background-color: rgb(16, 16, 16);
+    width: 35%;
+    padding: 20px;
+    border-radius: 5px;
+
+}
+
+p,h3 {
+    margin-bottom: 8px;
+}
+
+.changeBelow {
+    color: red;
+}
+
+.changeHigh {
+    color: green;
+}

@@ -2,10 +2,14 @@ import { BsSearch } from 'react-icons/bs';
 import styles from './Home.module.css'
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 function Home() {
-  const [criptosData, setCriptosData] = useState<CriptosData[]>([])
+  const navigate = useNavigate()
+  const [criptosData, setCriptosData] = useState<CriptosData[]>([]);
+  const [inputCriptoName, setInputCriptoName] = useState<string>("");
+  const [pageableCriptos, setPageableCriptos] = useState<number>(10);
 
   interface CriptosData {
     id:string,
@@ -24,7 +28,7 @@ function Home() {
 
   useEffect(() => {
     getCriptosInfo()
-  }, [])
+  }, [pageableCriptos])
 
   const price = Intl.NumberFormat("en-US", {
     style: "currency",
@@ -38,7 +42,7 @@ function Home() {
   })
 
   async function getCriptosInfo(){
-    const response = await fetch("https://rest.coincap.io/v3/assets?limit=10")
+    const response = await fetch(`https://rest.coincap.io/v3/assets?limit=${pageableCriptos}`)
     const responseJson:ResponseData = await response.json()
     const responseCriptos:CriptosData[] = responseJson.data.map(cripto => {
       return {
@@ -55,10 +59,20 @@ function Home() {
     console.log(responseCriptos)
   }
 
+  function pesquisarNomeCripto(){
+    console.log(inputCriptoName)
+    navigate(`/details/${inputCriptoName}`)
+  }
+
+  function paginarMaisCriptos(){
+    setPageableCriptos(pageableCriptos + 10)
+    console.log(pageableCriptos)
+  }
+
   return (
     <main className={styles.container}>
-        <form action="" className={styles.form} onSubmit={e => e.preventDefault()}>
-          <input type="text" className={styles.formInput} placeholder='Digite o nome da moeda... Ex: bitcoin'/>
+        <form action="" className={styles.form} onSubmit={pesquisarNomeCripto}>
+          <input type="text" className={styles.formInput} placeholder='Digite o nome da moeda... Ex: bitcoin' value={inputCriptoName} onChange={e => setInputCriptoName(e.target.value)}/>
           <button type="submit" className={styles.formButton}>
             <BsSearch size={30} color='#fff'/>
           </button>
@@ -75,10 +89,10 @@ function Home() {
               </thead>
               <tbody>
                 {criptosData.map((cripto) => (
-                  <tr className={styles.infoCripto}>
+                  <tr className={styles.infoCripto} key={cripto.id}>
                     <td>
                       <div className={styles.moedaInfo}>
-                        <Link to={`details/${cripto.name}`} className={styles.linkCripto}>
+                        <Link to={`details/${cripto.name}`} className={styles.linkCripto} state={cripto}>
                         <img src={`https://assets.coincap.io/assets/icons/${cripto.symbol.toLowerCase()}@2x.png`} alt="" />
                         <p style={{fontWeight: 'bolder'}}>{cripto.name} | {cripto.symbol}</p>
                         </Link>
@@ -92,6 +106,7 @@ function Home() {
                 ))}
               </tbody>
             </table>
+            <button onClick={paginarMaisCriptos} className={styles.btnPageable}>Visualizar mais criptos</button>
     </main>
   )
 }
