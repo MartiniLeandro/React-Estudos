@@ -1,16 +1,29 @@
-import { useLocation } from "react-router-dom";
+import {useLocation, useNavigate } from "react-router-dom";
 import styles from './Details.module.css'
+import { useEffect } from "react";
 
 function Details() {
   const location = useLocation();
   const {name, symbol, marketCapUsd, priceUsd, volumeUsd24Hr, changePercent24Hr} = location.state || {};
+  const cripto = location.state;
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if(!cripto){
+      navigate("/moedaNaoEncontrada", {replace: true})
+    }
+  }, [cripto, navigate]);
+
+  if (!cripto) {
+    return null; 
+  }
 
   return (
     <div className={styles.mainCripto}>
         <h1 style={{margin: '-10px 10px 10px 10px'}}>{name}</h1>
         <h2 style={{marginBottom:'20px'}}>{symbol}</h2>
         <div className={styles.criptoData}>
-          <img src={`https://assets.coincap.io/assets/icons/${symbol.toLowerCase()}@2x.png`} alt="" />
+          <img src={`https://assets.coincap.io/assets/icons/${symbol?.toLowerCase()}@2x.png`} alt="" />
           <h3>{name} | {symbol}</h3>
           <p>Preço: {priceUsd}</p>
           <p>Mercado: {marketCapUsd}</p>

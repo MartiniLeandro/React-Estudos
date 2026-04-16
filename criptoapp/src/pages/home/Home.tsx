@@ -1,6 +1,6 @@
 import { BsSearch } from 'react-icons/bs';
 import styles from './Home.module.css'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type SubmitEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -59,10 +59,17 @@ function Home() {
     console.log(responseCriptos)
   }
 
-  function pesquisarNomeCripto(){
-    console.log(inputCriptoName)
-    navigate(`/details/${inputCriptoName}`)
-  }
+function pesquisarNomeCripto(e: SubmitEvent) {
+  e.preventDefault();
+  if (inputCriptoName.trim() === "") return;
+  const nomeBusca = inputCriptoName.toLowerCase().trim();
+  const moedaEncontrada = criptosData.find(
+    item => item.name.toLowerCase() === nomeBusca || item.id.toLowerCase() === nomeBusca
+  );
+  navigate(`/details/${nomeBusca}`, { 
+    state: moedaEncontrada
+  });
+}
 
   function paginarMaisCriptos(){
     setPageableCriptos(pageableCriptos + 10)
