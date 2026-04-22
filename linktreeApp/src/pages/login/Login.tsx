@@ -1,15 +1,17 @@
-import {Link} from 'react-router'
+import {Link,useNavigate} from 'react-router'
 import { Input } from '../../components/Input'
 import { useState, type SubmitEvent } from 'react'
 
 export function Login(){
+    const navigate = useNavigate();
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
 
     function login(e: SubmitEvent){
-        e.preventDefault()
-        console.log(email)
-        console.log(password)
+        e.preventDefault();
+        localStorage.setItem("email",email);
+        localStorage.setItem("password",password);
+        navigate("/")
     }
 
 
@@ -23,7 +25,7 @@ export function Login(){
             <form className="flex flex-col items-center justify-center w-full max-w-md gap-4" onSubmit={login}>
                 <Input type='text' placeholder='Digite seu email' value={email} onChange={(e) => setEmail(e.target.value)}/>
                 <Input placeholder='***********' type='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
-                <button type="submit" className="w-full bg-blue-500 text-white p-1 rounded-sm">Acessar</button>
+                <button type="submit" className="w-full bg-blue-500 text-white p-1 rounded-sm cursor-pointer">Acessar</button>
             </form>
         </div>
     )
