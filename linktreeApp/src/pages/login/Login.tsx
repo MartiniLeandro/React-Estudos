@@ -9,6 +9,10 @@ export function Login(){
 
     function login(e: SubmitEvent){
         e.preventDefault();
+        if(email !== "user" && password !== "user"){
+            alert("Usuário incorreto")
+            return;
+        }
         localStorage.setItem("email",email);
         localStorage.setItem("password",password);
         navigate("/")
