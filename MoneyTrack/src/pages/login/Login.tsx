@@ -2,6 +2,8 @@ import { useState, type SubmitEvent } from "react"
 import api from "../../services/Api"
 import type { LoginRequest } from "../../types/Auth"
 import { useNavigate } from "react-router-dom"
+import type { AxiosError } from "axios"
+import type { ApiException } from "../../types/ApiException"
 
 export default function Login(){
     const [email, setEmail] = useState("")
@@ -18,23 +20,18 @@ export default function Login(){
             const token = response.data.token;
             localStorage.setItem("token",token)
             navigate("/")
-            //encaminhar o token em cada requisição, através de um interceptor(pesquisar sobre)
-            
         }catch(error: any){
-            console.log("ERRO COMPLETO:",error)
-            if (error.response) {
-            console.log("Mensagem do backend:", error.response.data)
-            console.log("Status:", error.response.status)
-            }
+           const err = error as AxiosError<ApiException>
+           alert(err.response?.data.message)
         }
     }
 
     return(
         <div className="min-h-screen flex text-white relative overflow-hidden">
 
-            <div className="absolute inset-0 bg-gradient-to-br from-[#0B0F14] via-[#0E1621] to-[#0B0F14]" />
+            <div className="absolute inset-0 bg-linear-to-br from-[#0B0F14] via-[#0E1621] to-[#0B0F14]" />
 
-            <div className="absolute w-[500px] h-[500px] bg-green-500/10 blur-[120px] rounded-full top-1/2 left-1/3 -translate-y-1/2" />
+            <div className="absolute w-125 h-125 bg-green-500/10 blur-[120px] rounded-full top-1/2 left-1/3 -translate-y-1/2" />
 
             <div className="relative flex w-full">
 

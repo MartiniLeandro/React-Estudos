@@ -44,6 +44,7 @@ function Home() {
   async function getCriptosInfo(){
     const response = await fetch(`https://rest.coincap.io/v3/assets?limit=${pageableCriptos}`)
     const responseJson:ResponseData = await response.json()
+    console.log(responseJson)
     const responseCriptos:CriptosData[] = responseJson.data.map(cripto => {
       return {
         id: cripto.id,
@@ -56,7 +57,7 @@ function Home() {
       }
     })
     setCriptosData(responseCriptos)
-    console.log(responseCriptos)
+    console.log(responseCriptos.slice(-10))
   }
 
 function pesquisarNomeCripto(e: SubmitEvent) {
