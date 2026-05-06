@@ -18,5 +18,7 @@ interface LastLaunches {
     id: number,
     description: string,
     value: number,
-    date: string
+    date: string,
+    category: string,
+    typeValue: string
 }
