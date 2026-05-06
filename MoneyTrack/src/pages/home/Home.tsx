@@ -51,12 +51,12 @@ export default function Home() {
         <div>
           {dashboardData?.totalRevenueCategoriesMonth.map(category => (
             <div className="flex justify-center items-center bg-amber-600">
-              <p>{category.name} <span>{category.totalValue}</span></p>
+              <p>{category.name} <span>{category.totalValue} {category.porcentagem}%</span></p>
             </div>
           ))}
           {dashboardData?.totalExpenseCategoriesMonth.map(category => (
             <div className="flex justify-center items-center bg-amber-900">
-              <p>{category.name} <span>{category.totalValue}</span></p>
+              <p>{category.name} <span>{category.totalValue} {category.porcentagem}%</span></p>
             </div>
           ))}
         </div>

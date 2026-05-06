@@ -10,7 +10,8 @@ export interface DashboardHome {
 
 interface CategoryTotal {
     name: string,
-    totalValue: number
+    totalValue: number,
+    porcentagem: number
 }
 
 interface LastLaunches {
