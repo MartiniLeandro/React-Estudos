@@ -3,21 +3,33 @@ import type { DashboardHome } from "../../types/DashboardHome";
 import api from "../../services/Api";
 
 export default function Home() {
-  const [dashboardData, setDashboardData] = useState<DashboardHome>()
+  const [dashboardData, setDashboardData] = useState<DashboardHome>();
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [monthYear, setMonthYear] = useState("");
 
   useEffect(() => {
-    getDadosDashboard()
-  }, [])
+    getDadosDashboard(year,month)
+  }, [year,month])
 
-  async function getDadosDashboard(){
+  async function getDadosDashboard(selectedYear:number, selectedMonth:number){
     const token = localStorage.getItem("token")
     try{
-        const response = await api.get<DashboardHome>("http://localhost:8080/user/launches/dashboard", {headers: {Authorization: `Bearer ${token}`}});
+        const response = await api.get<DashboardHome>(`/user/launches/dashboard?year=${selectedYear}&month=${selectedMonth}`, {headers: {Authorization: `Bearer ${token}`}});
+        console.log(response.request)
         const dataResponse:DashboardHome = response.data;
         setDashboardData(dataResponse);
     }catch(error){
       console.log(error)
     }
+  }
+
+  function changeDate(){
+    const [year, month] = monthYear.split("-");
+    const yearNumber = Number(year);
+    const monthNumber = Number(month);
+    setMonth(monthNumber);
+    setYear(yearNumber)
   }
 
 
@@ -47,6 +59,10 @@ export default function Home() {
               <p>{category.name} <span>{category.totalValue}</span></p>
             </div>
           ))}
+        </div>
+        <div className="flex justify-center item bg-blue-300 gap-2">
+          <input type="month" value={monthYear} onChange={(e) => setMonthYear(e.target.value)} className="border-2 py-1.5 my-1.5 rounded-md cursor-pointer"/>
+          <button type="submit" onClick={changeDate} className="border-2 px-3.5 my-1.5 rounded-md cursor-pointer">Mudar data</button>
         </div>
       </div>
     )
