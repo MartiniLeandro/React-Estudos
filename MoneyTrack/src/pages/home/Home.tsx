@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import type { DashboardHome } from "../../types/DashboardHome";
-import { Wallet, ArrowDown, ArrowUp } from "lucide-react";
+import { Wallet, ArrowDown, ArrowUp, House, ReceiptText, ChartPie } from "lucide-react";
 import api from "../../services/Api";
+import logo  from '../../../public/logo (2).png'
 
 export default function Home() {
   const [dashboardData, setDashboardData] = useState<DashboardHome>();
@@ -39,13 +40,48 @@ export default function Home() {
     return new Date(date).toLocaleDateString("pt-BR")
   }
 
+  function formatCurrency(value: number = 0) {
+  return value.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    })
+  }
+
+  function Card({title, value, icon, type}: any){
+    function getColorCard(){
+      if(type == "revenue"){
+        return "text-emerald-400"
+      }
+      if(type == "expense"){
+        return "text-red-400"
+      }
+
+      return "text-white"
+    }
+
+    return(
+      <div className="w-1/3 m-1 bg-[#121821] rounded-xl border border-white/5 flex flex-col gap-3.5 p-2.5">
+          <div className="flex justify-between">
+            <p className="">{title}</p>
+            <div className={`${getColorCard()}`}>{icon}</div>
+          </div>
+          <h2 className={`font-bold text-2xl ${getColorCard()}`}>{formatCurrency(value)}</h2>
+      </div>
+    )
+  }
+
 
     return(
       <div className="flex w-full h-screen">
 
         {/*SIDEBAR*/}
-        <div className="w-1/6 bg-[#0B0F14] border-r border-white/5"> 
-        
+        <div className="w-52 bg-[#0C131C] border-r border-white/5"> 
+          <img src={logo} className="mt-4"/>
+          <div className="flex flex-col mt-10">
+            <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><House/> Início</div>
+            <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><ReceiptText/> Lançamentos</div>
+            <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><ChartPie/> Resumo</div>
+          </div>
         </div>
 
         {/*CONTEUDO*/}
@@ -54,46 +90,46 @@ export default function Home() {
           {/*HEADER */}
           <div className="flex justify-between items-center">
             <div className="m-1">
-              <h2>Olá, User</h2>
-              <p>Aqui está o resumo das suas finanças</p>
+              <h2 className="text-2xl font-bold">Olá, User👋</h2>
+              <p className="text-gray-400">Aqui está o resumo das suas finanças.</p>
             </div>
             <p className="m-1">filtro</p>
           </div>
 
           {/*CARDS */}
           <div className="flex gap-4 my-2">
-            <Card title="Saldo total" value={dashboardData?.totalBalanceMonth} icon={<Wallet/>}/>
-            <Card title="Entradas" value={dashboardData?.totalRevenueMonth} icon={<ArrowUp/>}/>
-            <Card title="Saídias" value={dashboardData?.totalExpenseMonth} icon={<ArrowDown/>}/>
+            <Card title="Saldo total" value={dashboardData?.totalBalanceMonth} icon={<Wallet/>} type="balance"/>
+            <Card title="Entradas" value={dashboardData?.totalRevenueMonth} icon={<ArrowUp/>} type="revenue"/>
+            <Card title="Saídas" value={dashboardData?.totalExpenseMonth} icon={<ArrowDown/>} type="expense"/>
           </div>
 
           {/*ÁREA PRINCIPAL*/}
           <div className="flex flex-1 gap-4 min-h-0">
 
             {/*LANÇAMENTOS */}
-            <div className="w-2/3 bg-[#121821] rounded-xl border border-white/5 p-4">
-              <div className="flex justify-between">
+            <div className="w-2/3 bg-[#121821] rounded-xl border border-white/5">
+              <div className="flex justify-between m-3">
                 <p>Últimos lançamentos</p>
                 <button>ver todos</button>
               </div>
-              <table className="w-full mt-3">
-                <thead className="border-b-gray-400 border-b-2">
+              <table className="w-full mt-3 table-fixed">
+                <thead>
                   <tr>
-                    <th className="text-start">Data</th>
-                    <th className="text-start">Descrição</th>
-                    <th className="text-start">Categoria</th>
-                    <th className="text-start">Tipo</th>
-                    <th className="text-start">Valor</th>
+                    <th className="w-[18%] py-4 pl-4">Data</th>
+                    <th className="w-[30%]">Descrição</th>
+                    <th className="w-[30%]">Categoria</th>
+                    <th className="w-[18%]">Tipo</th>
+                    <th className="w-[18%]">Valor</th>
                   </tr>
                 </thead>
                 <tbody>
                   {dashboardData?.lastLaunches.map(launch => (
-                    <tr key={launch.id}>
-                      <td>{formatedDate(launch.date)}</td>
+                    <tr key={launch.id} className="border border-white/5 hover:bg-white/5 transition">
+                      <td className="py-4 pl-4 text-left">{formatedDate(launch.date)}</td>
                       <td>{launch.description}</td>
                       <td>{launch.category}</td>
-                      <td>|</td>
-                      <td>{launch.value}</td>
+                      {launch.typeValue === "REVENUE" ? <td className="text-emerald-400"><ArrowUp/></td> : <td className="text-red-400"><ArrowDown/></td>}
+                      {launch.typeValue === "REVENUE" ? <td className="text-emerald-400">{formatCurrency(launch.value)}</td> : <td className="text-red-400">{formatCurrency(launch.value)}</td>}
                     </tr>
                     ))}
                 </tbody>
@@ -108,16 +144,5 @@ export default function Home() {
         </div>
       </div>
     )
-
-
-    function Card({title, value, icon}: any){
-      return(
-        <div className="w-1/3 m-1 bg-[#121821] rounded-xl border border-white/5">
-            <p>{title}</p>
-            <h2>{value}</h2>
-            <div>{icon}</div>
-        </div>
-      )
-    }
 }
 
