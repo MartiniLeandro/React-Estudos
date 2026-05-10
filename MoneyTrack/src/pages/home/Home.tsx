@@ -3,12 +3,12 @@ import type { DashboardHome } from "../../types/DashboardHome";
 import { Wallet, ArrowDown, ArrowUp, House, ReceiptText, ChartPie } from "lucide-react";
 import api from "../../services/Api";
 import logo  from '../../../public/logo (2).png'
+import DoughnutCategory from "../../components/DoughnutCategory";
 
 export default function Home() {
   const [dashboardData, setDashboardData] = useState<DashboardHome>();
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [monthYear, setMonthYear] = useState("");
 
   useEffect(() => {
     getDadosDashboard(year,month)
@@ -17,10 +17,10 @@ export default function Home() {
   async function getDadosDashboard(selectedYear:number, selectedMonth:number){
     const token = localStorage.getItem("token")
     try{
-        selectedYear = 2025 //momentaneo para testes
-        selectedMonth = 9 //momentaneo para testes
+        selectedYear = year
+        selectedMonth = month
         const response = await api.get<DashboardHome>(`/user/launches/dashboard?year=${selectedYear}&month=${selectedMonth}`, {headers: {Authorization: `Bearer ${token}`}});
-        console.log(response.request)
+        console.log(response.data)
         const dataResponse:DashboardHome = response.data;
         setDashboardData(dataResponse);
     }catch(error){
@@ -28,8 +28,8 @@ export default function Home() {
     }
   }
 
-  function changeDate(){
-    const [year, month] = monthYear.split("-");
+  function changeDate(e: React.ChangeEvent<HTMLInputElement>){
+    const [year, month] = e.target.value.split("-")
     const yearNumber = Number(year);
     const monthNumber = Number(month);
     setMonth(monthNumber);
@@ -60,7 +60,7 @@ export default function Home() {
     }
 
     return(
-      <div className="w-1/3 m-1 bg-[#121821] rounded-xl border border-white/5 flex flex-col gap-3.5 p-2.5">
+      <div className="w-1/3 m-1 bg-[#121821] rounded-xl border border-white/10 flex flex-col gap-3.5 p-2.5">
           <div className="flex justify-between">
             <p className="">{title}</p>
             <div className={`${getColorCard()}`}>{icon}</div>
@@ -70,6 +70,7 @@ export default function Home() {
     )
   }
 
+  
 
     return(
       <div className="flex w-full h-screen">
@@ -93,7 +94,7 @@ export default function Home() {
               <h2 className="text-2xl font-bold">Olá, User👋</h2>
               <p className="text-gray-400">Aqui está o resumo das suas finanças.</p>
             </div>
-            <p className="m-1">filtro</p>
+            <input type="month" className="rounded-xl border border-white/20 p-2.5" value={`${year}-${String(month).padStart(2, "0")}`} onChange={changeDate}/>
           </div>
 
           {/*CARDS */}
@@ -107,7 +108,7 @@ export default function Home() {
           <div className="flex flex-1 gap-4 min-h-0">
 
             {/*LANÇAMENTOS */}
-            <div className="w-2/3 bg-[#121821] rounded-xl border border-white/5">
+            <div className="w-2/3 bg-[#121821] rounded-xl border border-white/10">
               <div className="flex justify-between m-3">
                 <p>Últimos lançamentos</p>
                 <button>ver todos</button>
@@ -124,7 +125,7 @@ export default function Home() {
                 </thead>
                 <tbody>
                   {dashboardData?.lastLaunches.map(launch => (
-                    <tr key={launch.id} className="border border-white/5 hover:bg-white/5 transition">
+                    <tr key={launch.id} className="border border-white/5 hover:bg-white/10 transition">
                       <td className="py-4 pl-4 text-left">{formatedDate(launch.date)}</td>
                       <td>{launch.description}</td>
                       <td>{launch.category}</td>
@@ -137,8 +138,9 @@ export default function Home() {
             </div>
 
             {/*GRÁFICO */}
-            <div className="w-1/3 bg-[#121821] rounded-xl border border-white/5">
-                  <p>gastos por categoria</p>
+            <div className="w-1/3 bg-[#121821] rounded-xl border border-white/10">
+                  <p>Gastos por categoria</p>
+                  <DoughnutCategory dashboardData={dashboardData}/>
             </div>
           </div>
         </div>

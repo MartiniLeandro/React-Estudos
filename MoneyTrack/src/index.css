@@ -9,3 +9,7 @@ body{
 th{
     @apply text-gray-400 text-sm font-medium py-1.5 text-left
 }
+
+input[type="month"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
