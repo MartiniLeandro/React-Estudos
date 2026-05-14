@@ -9,19 +9,23 @@ ChartJS.register(
 )
 
 interface props {
-    dashboardData?: DashboardHome
+    dashboardData?: DashboardHome,
+    type: "revenue" | "expense"
 }
 
 
-export default function DoughnutCategory({dashboardData}: props){
+export default function DoughnutCategory({dashboardData, type}: props){
+
+    const typeCategory = type === "revenue" ? dashboardData?.totalRevenueCategoriesMonth : dashboardData?.totalExpenseCategoriesMonth
+
     const chartData = {
-    labels: dashboardData?.totalRevenueCategoriesMonth.map(
+    labels: typeCategory?.map(
         category => category.name
     ),
 
     datasets: [
         {
-        data: dashboardData?.totalRevenueCategoriesMonth.map(
+        data: typeCategory?.map(
             category => category.totalValue
         ),
 
@@ -40,7 +44,9 @@ export default function DoughnutCategory({dashboardData}: props){
     }
 
     const chartOptions = {
-    responsive: false,
+    responsive: true,
+
+    maintainAspectRatio: false,
 
     plugins: {
         legend: {

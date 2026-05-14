@@ -9,6 +9,7 @@ export default function Home() {
   const [dashboardData, setDashboardData] = useState<DashboardHome>();
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [categoryType, setCategoryType] = useState<"revenue" | "expense">("revenue");
 
   useEffect(() => {
     getDadosDashboard(year,month)
@@ -28,7 +29,7 @@ export default function Home() {
     }
   }
 
-  function changeDate(e: React.ChangeEvent<HTMLInputElement>){
+  function changeDate(e: React.ChangeEvent<HTMLInputElement>){ //dia está com 1 a menos 
     const [year, month] = e.target.value.split("-")
     const yearNumber = Number(year);
     const monthNumber = Number(month);
@@ -70,7 +71,7 @@ export default function Home() {
     )
   }
 
-  
+  const categories = categoryType === "revenue" ? dashboardData?.totalRevenueCategoriesMonth : dashboardData?.totalExpenseCategoriesMonth 
 
     return(
       <div className="flex w-full h-screen">
@@ -138,9 +139,26 @@ export default function Home() {
             </div>
 
             {/*GRÁFICO */}
-            <div className="w-1/3 bg-[#121821] rounded-xl border border-white/10">
-                  <p>Gastos por categoria</p>
-                  <DoughnutCategory dashboardData={dashboardData}/>
+            <div className="w-1/3 bg-[#121821] rounded-xl border border-white/10 flex flex-col gap-20">
+              <div className="flex justify-center gap-20 my-2.5">
+                <p className="text-2xl">Gastos por categoria</p>
+                <select onChange={() => setCategoryType(categoryType === "revenue" ? "expense" : "revenue")} className="rounded-md border border-white/10">
+                  <option value="revenue" className="bg-[#0B0F14]">Receitas</option>
+                  <option value="expense" className="bg-[#0B0F14]">Despesas</option>
+                </select>
+              </div>
+              <div className="w-full h-52 ">
+                <DoughnutCategory dashboardData={dashboardData} type={categoryType}/>
+              </div>
+              <div>
+                {categories?.map(category => (
+                  <div className="grid grid-cols-3 py-1 mx-5">
+                    <p>{category.name}</p>
+                    <p className="text-center ml-5">{formatCurrency(category.totalValue)}</p>
+                    <p className="text-right">{category.porcentagem}%</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
