@@ -1,0 +1,16 @@
+import logo  from '../../public/logo (2).png'
+import { Link } from "react-router-dom";
+import { House, ReceiptText, ChartPie } from 'lucide-react';
+
+export default function Sidebar(){
+    return(
+        <div className="w-52 bg-[#0C131C] border-r border-white/5"> 
+          <Link to="/"><img src={logo} className="mt-4"/></Link>
+          <div className="flex flex-col mt-10">
+            <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><House/> <Link to="/">Início</Link></div>
+            <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><ReceiptText/> <Link to="/launches">Lançamentos</Link></div>
+            <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><ChartPie/> Resumo</div>
+          </div>
+        </div>
+    )
+}

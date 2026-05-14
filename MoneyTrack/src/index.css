@@ -13,3 +13,7 @@ th{
 input[type="month"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
+
+label {
+    @apply text-gray-400 text-sm font-medium text-left
+}

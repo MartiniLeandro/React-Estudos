@@ -13,6 +13,15 @@ interface props {
     type: "revenue" | "expense"
 }
 
+export const colors = [
+            "#10B981",
+            "#F59E0B",
+            "#8B5CF6",
+            "#EF4444",
+            "#3B82F6",
+            "#14B8A6"
+        ]
+
 
 export default function DoughnutCategory({dashboardData, type}: props){
 
@@ -29,14 +38,7 @@ export default function DoughnutCategory({dashboardData, type}: props){
             category => category.totalValue
         ),
 
-        backgroundColor: [
-            "#10B981",
-            "#F59E0B",
-            "#8B5CF6",
-            "#EF4444",
-            "#3B82F6",
-            "#14B8A6"
-        ],
+        backgroundColor: colors,
 
         borderWidth: 0
         }

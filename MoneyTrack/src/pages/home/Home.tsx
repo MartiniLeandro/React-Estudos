@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react"
 import type { DashboardHome } from "../../types/DashboardHome";
-import { Wallet, ArrowDown, ArrowUp, House, ReceiptText, ChartPie } from "lucide-react";
+import { Wallet, ArrowDown, ArrowUp} from "lucide-react";
 import api from "../../services/Api";
-import logo  from '../../../public/logo (2).png'
 import DoughnutCategory from "../../components/DoughnutCategory";
+import Card from "../../components/Card";
+import Sidebar from "../../components/Sidebar";
+import { Link } from "react-router-dom";
+import { colors } from "../../components/DoughnutCategory";
+
 
 export default function Home() {
   const [dashboardData, setDashboardData] = useState<DashboardHome>();
@@ -38,37 +42,10 @@ export default function Home() {
   }
 
   function formatedDate(date: string){
-    return new Date(date).toLocaleDateString("pt-BR")
-  }
+    const [year, month, day] =
+    date.split("-");
 
-  function formatCurrency(value: number = 0) {
-  return value.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    })
-  }
-
-  function Card({title, value, icon, type}: any){
-    function getColorCard(){
-      if(type == "revenue"){
-        return "text-emerald-400"
-      }
-      if(type == "expense"){
-        return "text-red-400"
-      }
-
-      return "text-white"
-    }
-
-    return(
-      <div className="w-1/3 m-1 bg-[#121821] rounded-xl border border-white/10 flex flex-col gap-3.5 p-2.5">
-          <div className="flex justify-between">
-            <p className="">{title}</p>
-            <div className={`${getColorCard()}`}>{icon}</div>
-          </div>
-          <h2 className={`font-bold text-2xl ${getColorCard()}`}>{formatCurrency(value)}</h2>
-      </div>
-    )
+    return `${day}/${month}/${year}`;
   }
 
   const categories = categoryType === "revenue" ? dashboardData?.totalRevenueCategoriesMonth : dashboardData?.totalExpenseCategoriesMonth 
@@ -77,14 +54,7 @@ export default function Home() {
       <div className="flex w-full h-screen">
 
         {/*SIDEBAR*/}
-        <div className="w-52 bg-[#0C131C] border-r border-white/5"> 
-          <img src={logo} className="mt-4"/>
-          <div className="flex flex-col mt-10">
-            <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><House/> Início</div>
-            <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><ReceiptText/> Lançamentos</div>
-            <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><ChartPie/> Resumo</div>
-          </div>
-        </div>
+        <Sidebar/>
 
         {/*CONTEUDO*/}
         <div className="flex-1 bg-[#0B0F14] flex flex-col p-8"> 
@@ -112,7 +82,7 @@ export default function Home() {
             <div className="w-2/3 bg-[#121821] rounded-xl border border-white/10">
               <div className="flex justify-between m-3">
                 <p>Últimos lançamentos</p>
-                <button>ver todos</button>
+                <Link to="/launches">Ver todos</Link>
               </div>
               <table className="w-full mt-3 table-fixed">
                 <thead>
@@ -151,9 +121,13 @@ export default function Home() {
                 <DoughnutCategory dashboardData={dashboardData} type={categoryType}/>
               </div>
               <div>
-                {categories?.map(category => (
+                {categories?.map((category, index) => (
+                  
                   <div className="grid grid-cols-3 py-1 mx-5">
-                    <p>{category.name}</p>
+                    <div className="flex items-center gap-2">
+                      <div style={{backgroundColor: colors[index]}} className="w-3 h-3 rounded-full"/>
+                      <p className="truncate">{category.name}</p>
+                    </div>
                     <p className="text-center ml-5">{formatCurrency(category.totalValue)}</p>
                     <p className="text-right">{category.porcentagem}%</p>
                   </div>
@@ -165,4 +139,11 @@ export default function Home() {
       </div>
     )
 }
+
+  export function formatCurrency(value: number = 0) {
+  return value.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    })
+  }
 
