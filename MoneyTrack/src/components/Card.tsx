@@ -1,6 +1,6 @@
 import { formatCurrency } from "../pages/home/Home"
 
-export default function Card({type, title, icon, value}: any){
+export default function Card({type, title, icon, value, formatValue}: any){
     function getColorCard(){
       if(type == "revenue"){
         return "text-emerald-400"
@@ -18,7 +18,8 @@ export default function Card({type, title, icon, value}: any){
             <p className="">{title}</p>
             <div className={`${getColorCard()}`}>{icon}</div>
           </div>
-          <h2 className={`font-bold text-2xl ${getColorCard()}`}>{formatCurrency(value)}</h2>
+          
+          <h2 className={`font-bold text-2xl ${getColorCard()}`}>{formatValue === true ? formatCurrency(value) : value}</h2>
       </div>
     )
 }

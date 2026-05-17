@@ -1,7 +1,31 @@
+import { useEffect, useState } from "react"
 import Card from "../../components/Card"
 import Sidebar from "../../components/Sidebar"
+import api from "../../services/Api"
+import type { launchesFilter, LaunchesData } from "../../types/LaunchesData"
 
 export default function Launches(){
+    const [launchesData, setLaunchesData] = useState<LaunchesData>();
+    const [filters, setFilters] = useState<launchesFilter>({initialDate: '2025-09-01', finalDate: '2025-09-30'}) //data inicial para teste, o setFilters vai ser com o filtro do backend
+
+    useEffect(() => {
+        getLaunchesData(filters)
+    }, [])
+
+    async function getLaunchesData(filters: launchesFilter) {
+        const token = localStorage.getItem("token")
+        try{
+            const response = await api.get<LaunchesData>("user/launches/data", {params: filters, headers: {Authorization: `Bearer ${token}`}})
+            console.log(response.request)
+            const data:LaunchesData = response.data
+            console.log(data)
+            setLaunchesData(data)
+        }catch(error: any){
+            console.log(error)
+        }
+    }
+
+
     return(
         <div className="flex w-full h-screen">
             
@@ -53,10 +77,10 @@ export default function Launches(){
 
                 {/*CARDS*/}
                 <div className="flex">
-                    <Card title="Receitas"/>
-                    <Card title="Despesas"/>
-                    <Card title="Saldo"/>
-                    <Card title="Total"/>
+                    <Card title="Receitas" value={launchesData?.typeValues.revenue} formatValue ={true}/>
+                    <Card title="Despesas" value={launchesData?.typeValues.expense} formatValue ={true}/>
+                    <Card title="Saldo" value={launchesData?.totalValue} formatValue ={true}/>
+                    <Card title="Total" value={launchesData?.totalLaunches} formatValue ={false}/> 
                 </div>
 
 

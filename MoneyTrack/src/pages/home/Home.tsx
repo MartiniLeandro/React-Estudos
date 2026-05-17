@@ -70,9 +70,9 @@ export default function Home() {
 
           {/*CARDS */}
           <div className="flex gap-4 my-2">
-            <Card title="Saldo total" value={dashboardData?.totalBalanceMonth} icon={<Wallet/>} type="balance"/>
-            <Card title="Entradas" value={dashboardData?.totalRevenueMonth} icon={<ArrowUp/>} type="revenue"/>
-            <Card title="Saídas" value={dashboardData?.totalExpenseMonth} icon={<ArrowDown/>} type="expense"/>
+            <Card title="Saldo total" value={dashboardData?.totalBalanceMonth} icon={<Wallet/>} type="balance" formatValue ={true}/>
+            <Card title="Entradas" value={dashboardData?.totalRevenueMonth} icon={<ArrowUp/>} type="revenue" formatValue ={true}/>
+            <Card title="Saídas" value={dashboardData?.totalExpenseMonth} icon={<ArrowDown/>} type="expense" formatValue ={true}/>
           </div>
 
           {/*ÁREA PRINCIPAL*/}
