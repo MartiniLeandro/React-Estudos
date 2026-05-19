@@ -41,13 +41,6 @@ export default function Home() {
     setYear(yearNumber)
   }
 
-  function formatedDate(date: string){
-    const [year, month, day] =
-    date.split("-");
-
-    return `${day}/${month}/${year}`;
-  }
-
   const categories = categoryType === "revenue" ? dashboardData?.totalRevenueCategoriesMonth : dashboardData?.totalExpenseCategoriesMonth 
 
     return(
@@ -145,5 +138,12 @@ export default function Home() {
     style: "currency",
     currency: "BRL",
     })
+  }
+
+  export function formatedDate(date: string){
+  const [year, month, day] =
+  date.split("-");
+
+  return `${day}/${month}/${year}`;
   }
 

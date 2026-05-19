@@ -14,7 +14,7 @@ interface Launch {
     date: string
 }
 
-interface Category {
+export interface Category {
     id: number,
     name: string,
     typeValue: string,
