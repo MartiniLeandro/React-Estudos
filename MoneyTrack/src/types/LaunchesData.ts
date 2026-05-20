@@ -18,6 +18,7 @@ export interface Category {
     id: number,
     name: string,
     typeValue: string,
+    icon: string
 
 }
 

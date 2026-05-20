@@ -3,8 +3,9 @@ import Card from "../../components/Card"
 import Sidebar from "../../components/Sidebar"
 import api from "../../services/Api"
 import type { launchesFilter, LaunchesData, Category } from "../../types/LaunchesData"
-import { Pencil, Trash2 } from "lucide-react"
+import { Download, Pencil, Trash2 } from "lucide-react"
 import { formatCurrency, formatedDate } from "../home/Home"
+import { categoryIcons } from "../../utils/CategoryIcon"
 
 export default function Launches(){
     const [launchesData, setLaunchesData] = useState<LaunchesData>();
@@ -19,7 +20,7 @@ export default function Launches(){
         getCategories()
     }, [filters.typeValue])
 
-    async function getLaunchesData(filters: launchesFilter) { //quando coloca um typeValue e dps volta para TODOS, os lançamentos não voltam
+    async function getLaunchesData(filters: launchesFilter) { //configurar os valores para deixar dinâmico de acordo com os lançamentos filtrados
         const token = localStorage.getItem("token")
         console.log(filters.categoryId)
         filters.categoryId = filters.categoryId == 0 ? undefined : filters.categoryId
@@ -66,9 +67,14 @@ export default function Launches(){
                         <h2 className="font-bold text-2xl">Lançamentos</h2>
                         <p className="text-gray-400">Gerencia seus lançamentos financeiros</p>
                     </div>
-                    <div>
-                        <button className="border-2 mr-4 p-1.5">Exportar</button>
-                        <button className="border-2 p-1.5">+ Novo lançamento</button>
+                    <div className="flex h-12">
+                        <button className="border border-white/10 rounded-md mr-4 p-1.5"> 
+                            <div className="flex gap-2.5 cursor-pointer">
+                                <Download className="text-green-400"/>
+                                <span>Exportar</span>
+                            </div>
+                         </button>
+                        <button className="bg-green-600 px-2.5 rounded-md cursor-pointer">+ Novo lançamento</button>
                     </div>
                 </header>
 
@@ -129,11 +135,19 @@ export default function Launches(){
                             </tr>
                             </thead>
                             <tbody>
-                            {launchesData?.launches.map(launch => (
+                            {launchesData?.launches.map(launch => { //ordernar por data os lançamentos
+                                const Icon = categoryIcons[launch.category.icon];
+
+                                return(
                                 <tr key={launch.id} className="border border-white/5 hover:bg-white/10 transition">
                                 <td className="py-4 pl-4 text-left">{formatedDate(launch.date)}</td>
                                 <td>{launch.description}</td>
-                                <td>{launch.category.name}</td>
+                                <td>
+                                    <div className="flex items-center gap-2">
+                                        {Icon && <div className="p-0.5 border border-blue-700 rounded-full"><Icon className="text-blue-700"/></div>}
+                                        <span>{launch.category.name}</span>
+                                    </div>
+                                    </td>
                                 {launch.category.typeValue == 'REVENUE' ? <td><span className="bg-green-950 p-1 text-green-400 rounded-md">Receita</span></td> : 
                                 <td><span className="bg-red-950 p-1 text-red-400 rounded-md">Despesa</span></td>} 
                                 <td style={launch.category.typeValue == "REVENUE" ? {color: "green"} : {color: "red"}} className="font-bold">{formatCurrency(launch.value)}</td>
@@ -144,7 +158,7 @@ export default function Launches(){
                                     </div>
                                 </td>
                                 </tr>
-                                ))}
+                                )})}
                             </tbody>
                         </table>
                     </div>
