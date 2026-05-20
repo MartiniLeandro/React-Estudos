@@ -9,7 +9,7 @@ import { formatCurrency, formatedDate } from "../home/Home"
 export default function Launches(){
     const [launchesData, setLaunchesData] = useState<LaunchesData>();
     const [filters, setFilters] = useState<launchesFilter>({initialDate: '2025-09-01', finalDate: '2025-09-30'}) //data inicial para teste, o setFilters vai ser com o filtro do backend
-    const [categories, setCategories] = useState<Category[]>([])
+    const [categories, setCategories] = useState<Category[]>([]) //colocar ícone em cada categoria (alterar no backend)
 
     useEffect(() => {
         getLaunchesData(filters)
@@ -19,8 +19,10 @@ export default function Launches(){
         getCategories()
     }, [filters.typeValue])
 
-    async function getLaunchesData(filters: launchesFilter) {
+    async function getLaunchesData(filters: launchesFilter) { //quando coloca um typeValue e dps volta para TODOS, os lançamentos não voltam
         const token = localStorage.getItem("token")
+        console.log(filters.categoryId)
+        filters.categoryId = filters.categoryId == 0 ? undefined : filters.categoryId
         try{
             const response = await api.get<LaunchesData>("user/launches/data", {params: filters, headers: {Authorization: `Bearer ${token}`}})
             console.log(response.request)
@@ -32,14 +34,12 @@ export default function Launches(){
         }
     }
 
-    async function getCategories(){ //deixar certinha de acordo com o filtro
+    async function getCategories(){
         const token = localStorage.getItem("token");
         const typeValue = filters.typeValue;
         try{
-            const response = await api.get("categories/filter", {params: typeValue ? {typeValue} : undefined,headers: {Authorization: `Bearer ${token}`}})
-            const data = response.data
-            console.log("categorias: " + data)
-            console.log(typeValue)
+            const response = await api.get<Category[]>("categories/filter", {params: typeValue ? {typeValue} : undefined,headers: {Authorization: `Bearer ${token}`}})
+            const data: Category[] = response.data
             setCategories(data)
         }catch(error: any){
             console.log(error)
@@ -50,7 +50,6 @@ export default function Launches(){
         const typeValue = event.target.value;
         setFilters({...filters, typeValue: typeValue ? typeValue.toUpperCase() : undefined})
     }
-
 
     return(
         <div className="flex w-full h-screen">
@@ -74,17 +73,17 @@ export default function Launches(){
                 </header>
 
                 {/*FILTROS*/}
-                <form className="flex bg-[#121821] rounded-xl border border-white/10 mt-6 justify-between items-center p-2.5 m-1">
+                <form className="flex bg-[#121821] rounded-xl border border-white/10 mt-6 justify-between items-center p-2.5 m-1" onSubmit={(e) => e.preventDefault}>
                     <div className="flex flex-col">
                         <label>Período</label>
-                        <div>
+                        <div className="bg-gray-950 p-1 rounded-md border border-white/10">
                             <input type="date" value={filters.initialDate || ""} onChange={(e) => setFilters({...filters, initialDate: e.target.value})}/>
                             <input type="date" value={filters.finalDate || ""} onChange={(e) => setFilters({...filters, finalDate: e.target.value})}/>
                         </div>
                     </div>
                     <div className="flex flex-col">
                         <label>Tipo</label>
-                        <select onChange={(e) => setFiltersCategory(e)}>
+                        <select onChange={(e) => setFiltersCategory(e)} className="bg-gray-950 p-1 rounded-md border border-white/10">
                             <option value="">Todos</option>
                             <option value="revenue">Receitas</option>
                             <option value="expense">Despesas</option>
@@ -92,16 +91,16 @@ export default function Launches(){
                     </div>
                     <div className="flex flex-col">
                         <label>Categoria</label>
-                        <select>
+                        <select onChange={(e) => setFilters({...filters, categoryId: Number(e.target.value)})} className="bg-gray-950 p-1 rounded-md border border-white/10">
+                            <option value={0}>Todas as categorias</option>
                             {categories.map(category => (
-                                <option key={category.id} className="bg-black">{category.name}</option>
+                                <option key={category.id} className="bg-black" value={category.id}>{category.name}</option>
                             ))}
                         </select>
                     </div>
                     <div className="flex flex-col">
                         <input type="text" placeholder="Buscar lançamento"/>
-                    </div>
-                    <button>filtrar</button>                    
+                    </div>              
                 </form>
 
                 {/*CARDS*/}
@@ -135,12 +134,13 @@ export default function Launches(){
                                 <td className="py-4 pl-4 text-left">{formatedDate(launch.date)}</td>
                                 <td>{launch.description}</td>
                                 <td>{launch.category.name}</td>
-                                {launch.category.typeValue == 'REVENUE' ? <td>Receita</td> : <td>Despesa</td>} 
-                                <td>{formatCurrency(launch.value)}</td>
+                                {launch.category.typeValue == 'REVENUE' ? <td><span className="bg-green-950 p-1 text-green-400 rounded-md">Receita</span></td> : 
+                                <td><span className="bg-red-950 p-1 text-red-400 rounded-md">Despesa</span></td>} 
+                                <td style={launch.category.typeValue == "REVENUE" ? {color: "green"} : {color: "red"}} className="font-bold">{formatCurrency(launch.value)}</td>
                                 <td>
                                     <div className="flex gap-2.5">
-                                        <Pencil/>
-                                        <Trash2/>
+                                        <Pencil className="text-gray-200 cursor-pointer"/>
+                                        <Trash2 className="text-gray-200 cursor-pointer"/>
                                     </div>
                                 </td>
                                 </tr>
