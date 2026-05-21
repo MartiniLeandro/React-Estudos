@@ -1,4 +1,4 @@
-import { Bitcoin, Car, ChartLine, Gift, HandCoins, ShoppingCart } from "lucide-react";
+import { Bitcoin, Car, ChartLine, Gift,  HandCoins, ShoppingCart } from "lucide-react";
 
 export const categoryIcons: Record<string,any> = {
     "hand-coins": HandCoins,

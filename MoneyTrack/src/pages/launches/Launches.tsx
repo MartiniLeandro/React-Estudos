@@ -6,11 +6,13 @@ import type { launchesFilter, LaunchesData, Category } from "../../types/Launche
 import { Download, Pencil, Trash2 } from "lucide-react"
 import { formatCurrency, formatedDate } from "../home/Home"
 import { categoryIcons } from "../../utils/CategoryIcon"
+import LaunchModal from "../../components/LaunchModal"
 
 export default function Launches(){
     const [launchesData, setLaunchesData] = useState<LaunchesData>();
     const [filters, setFilters] = useState<launchesFilter>({initialDate: '2025-09-01', finalDate: '2025-09-30'}) //data inicial para teste, o setFilters vai ser com o filtro do backend
     const [categories, setCategories] = useState<Category[]>([]) //colocar ícone em cada categoria (alterar no backend)
+    const [openModal, setOpenModal] = useState(false)
 
     useEffect(() => {
         getLaunchesData(filters)
@@ -74,7 +76,7 @@ export default function Launches(){
                                 <span>Exportar</span>
                             </div>
                          </button>
-                        <button className="bg-green-600 px-2.5 rounded-md cursor-pointer">+ Novo lançamento</button>
+                        <button className="bg-green-600 px-2.5 rounded-md cursor-pointer" onClick={() => setOpenModal(true)}>+ Novo lançamento</button>
                     </div>
                 </header>
 
@@ -172,6 +174,9 @@ export default function Launches(){
                             <p>gráfico 2</p>
                         </div>
                     </div>
+
+                {/*MODAL DE CRIAR LANÇAMENTO*/}
+                <LaunchModal open={openModal} onClose={() => setOpenModal(false)}/>                   
 
                 </div >
             </div>

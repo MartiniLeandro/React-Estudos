@@ -88,7 +88,7 @@ export default function Home() {
                   </tr>
                 </thead>
                 <tbody>
-                  {dashboardData?.lastLaunches.map(launch => (
+                  {dashboardData?.lastLaunches.map(launch => ( //colocar o ícone
                     <tr key={launch.id} className="border border-white/5 hover:bg-white/10 transition">
                       <td className="py-4 pl-4 text-left">{formatedDate(launch.date)}</td>
                       <td>{launch.description}</td>
