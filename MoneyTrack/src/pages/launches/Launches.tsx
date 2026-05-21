@@ -176,7 +176,7 @@ export default function Launches(){
                     </div>
 
                 {/*MODAL DE CRIAR LANÇAMENTO*/}
-                <LaunchModal open={openModal} onClose={() => setOpenModal(false)}/>                   
+                <LaunchModal open={openModal} onClose={() => setOpenModal(false)}/>              
 
                 </div >
             </div>
