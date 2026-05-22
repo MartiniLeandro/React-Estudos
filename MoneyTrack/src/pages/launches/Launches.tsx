@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import Card from "../../components/Card"
 import Sidebar from "../../components/Sidebar"
 import api from "../../services/Api"
-import type { launchesFilter, LaunchesData, Category } from "../../types/LaunchesData"
+import type { launchesFilter, LaunchesData, Category, Launch} from "../../types/LaunchesData"
 import { Download, Pencil, Trash2 } from "lucide-react"
 import { formatCurrency, formatedDate } from "../home/Home"
 import { categoryIcons } from "../../utils/CategoryIcon"
@@ -13,6 +13,7 @@ export default function Launches(){
     const [filters, setFilters] = useState<launchesFilter>({initialDate: '2025-09-01', finalDate: '2025-09-30'}) //data inicial para teste, o setFilters vai ser com o filtro do backend
     const [categories, setCategories] = useState<Category[]>([]) //colocar ícone em cada categoria (alterar no backend)
     const [openModal, setOpenModal] = useState(false)
+    const [launchData, setLaunchData] = useState<Launch | null>(null)
 
     useEffect(() => {
         getLaunchesData(filters)
@@ -35,6 +36,11 @@ export default function Launches(){
         }catch(error: any){
             console.log(error)
         }
+    }
+
+    function handleCloseModal(){
+        setOpenModal(false)
+        setLaunchData(null)
     }
 
 
@@ -145,7 +151,10 @@ export default function Launches(){
                                 <td style={launch.category.typeValue == "REVENUE" ? {color: "green"} : {color: "red"}} className="font-bold">{formatCurrency(launch.value)}</td>
                                 <td>
                                     <div className="flex gap-2.5">
-                                        <Pencil className="text-gray-200 cursor-pointer"/>
+                                        <Pencil className="text-gray-200 cursor-pointer" onClick={() => {
+                                            setOpenModal(true)
+                                            setLaunchData(launch)
+                                        }}/>
                                         <Trash2 className="text-gray-200 cursor-pointer"/>
                                     </div>
                                 </td>
@@ -166,7 +175,7 @@ export default function Launches(){
                     </div>
 
                 {/*MODAL DE CRIAR LANÇAMENTO*/}
-                <LaunchModal open={openModal} onClose={() => setOpenModal(false)}/>              
+                <LaunchModal open={openModal} onClose={handleCloseModal} launch={launchData}/>              
 
                 </div >
             </div>

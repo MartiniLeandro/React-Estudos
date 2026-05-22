@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import api from "../services/Api";
 import { getCategories } from "../pages/launches/Launches";
-import type { Category, launchesFilter } from "../types/LaunchesData";
+import type { Category, Launch, launchesFilter } from "../types/LaunchesData";
 
 interface Props{
     open: boolean,
     onClose: () => void
+    launch: Launch | null;
 } 
 
 interface LaunchRequest{
@@ -22,7 +23,7 @@ interface LaunchResponse{
     date?: string;
 }
 
-export default function LaunchModal({open, onClose}: Props){
+export default function LaunchModal({open, onClose, launch}: Props){
     const [launchData, setLaunchData] = useState<LaunchRequest>({});
     const [filters, setFilters] = useState<launchesFilter>({})
     const [categories, setCategories] = useState<Category[]>();
@@ -30,6 +31,22 @@ export default function LaunchModal({open, onClose}: Props){
     useEffect(() => {
         getCategories(filters,setCategories)
     }, [filters.typeValue])
+
+    useEffect(() => {
+        if(launch){
+            setLaunchData({description: launch.description, value:launch.value, date: launch.date, categoryId: launch.category.id})
+        }else{
+            setLaunchData({})
+        }
+    }, [launch])
+
+    async function handleSaveLaunch(){
+        if(launch){
+            await editLaunch()
+        }else{
+            await  createLaunch()
+        }
+    }
 
     async function createLaunch(){
         const token = localStorage.getItem("token")
@@ -45,6 +62,10 @@ export default function LaunchModal({open, onClose}: Props){
         }
     }
 
+    async function editLaunch(){
+        //criar função
+    }
+
     if(!open) return null
     return  (
         <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center">
@@ -56,7 +77,7 @@ export default function LaunchModal({open, onClose}: Props){
                         <h2 className="text-xl mb-1.5">Novo lançamento</h2>
                         <p className="text-sm text-gray-400">Preencha os dados do lançamento</p>
                     </div>
-                    <button onClick={onClose} className="cursor-pointer">X</button>
+                    <button onClick={() => onClose()} className="cursor-pointer">X</button>
                 </div>
 
                 {/*FORMULÁRIO*/}
@@ -78,7 +99,7 @@ export default function LaunchModal({open, onClose}: Props){
                     <div>
                         <label>Categoria</label>
                         <div>
-                            <select onChange={(e) => setLaunchData(prev => ({...prev, categoryId: Number(e.target.value)}))}>
+                            <select value={launchData.categoryId || ""} onChange={(e) => setLaunchData(prev => ({...prev, categoryId: Number(e.target.value)}))}>
                                 <option value="" className="bg-black">Selecione uma categoria</option>
                                  {categories?.map(category => (
                                 <option key={category.id} className="bg-black" value={category.id}>{category.name}</option>
@@ -89,7 +110,7 @@ export default function LaunchModal({open, onClose}: Props){
                     <div>
                         <label>Data</label>
                         <div>
-                            <input type="date" className="border border-white/10 rounded-md w-full" onChange={(e) => setLaunchData(prev => ({...prev, date:e.target.value}))}/>
+                            <input type="date" value={launchData.date != null ? launchData.date : ""} className="border border-white/10 rounded-md w-full" onChange={(e) => setLaunchData(prev => ({...prev, date:e.target.value}))}/>
                         </div>
                     </div>
                     <div className="col-span-2 flex flex-col gap-2">
@@ -107,7 +128,7 @@ export default function LaunchModal({open, onClose}: Props){
                 {/*BOTÕES*/}
                 <div className="flex gap-2 justify-end items-end flex-1">
                     <button type="button" className="border border-white/10 rounded-md">Cancelar</button>
-                    <button type="button" className="border border-white/10 rounded-md" onClick={createLaunch}>Salvar lançamento</button>
+                    <button type="button" className="border border-white/10 rounded-md" onClick={handleSaveLaunch}>Salvar lançamento</button>
                 </div>
 
             </div>

@@ -6,7 +6,7 @@ export interface LaunchesData {
     categoryTotal: CategoriesTotal[]
 }
 
-interface Launch {
+export interface Launch {
     id: number,
     description: string,
     category: Category //trocar isso depois no backend, não receber a category completa
