@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../services/Api";
+import { getCategories } from "../pages/launches/Launches";
+import type { Category, launchesFilter } from "../types/LaunchesData";
 
 interface Props{
     open: boolean,
@@ -10,22 +12,36 @@ interface LaunchRequest{
     description?: string,
     categoryId?: number,
     value?: number,
-    date?: Date;
+    date?: string;
+}
+
+interface LaunchResponse{
+    description?: string,
+    categoryId?: number,
+    value?: number,
+    date?: string;
 }
 
 export default function LaunchModal({open, onClose}: Props){
-    const [launchData, setLaunchData] = useState<LaunchRequest>();
-    const [launchDescription, setLaunchDescription] = useState<string>("");
-    const [launchValue, setLaunchValue] = useState<number>();
+    const [launchData, setLaunchData] = useState<LaunchRequest>({});
+    const [filters, setFilters] = useState<launchesFilter>({})
+    const [categories, setCategories] = useState<Category[]>();
+    
+    useEffect(() => {
+        getCategories(filters,setCategories)
+    }, [filters.typeValue])
 
     async function createLaunch(){
         const token = localStorage.getItem("token")
         try{
-            const response = await api.post('/user/launches/create', launchData, {headers: {Authorization: `Bearer ${token}`}})
+            const response = await api.post<LaunchResponse>('/user/launches/create', launchData, {headers: {Authorization: `Bearer ${token}`}})
             const data = response.data
             console.log(data)
+            alert("Lançamento criado")
         }catch(error: any){
             console.log(error)
+        }finally{
+            console.log(launchData)
         }
     }
 
@@ -48,34 +64,37 @@ export default function LaunchModal({open, onClose}: Props){
                     <div>
                         <label>Tipo</label>
                         <div className="grid grid-cols-2 gap-2">
-                            <button className="border border-white/10 rounded-md cursor-pointer">Receita</button>
-                            <button className="border border-white/10 rounded-md cursor-pointer">Despesa</button>
+                            <button type="button" className="border border-white/10 rounded-md cursor-pointer" onClick={() => setFilters({...filters, typeValue: "REVENUE"})}>Receita</button>
+                            <button type="button" className="border border-white/10 rounded-md cursor-pointer" onClick={() => setFilters({...filters, typeValue: "EXPENSE"})}>Despesa</button>
                         </div>
                     </div>
                     <div>
                         <label>Valor</label>
                         <div className="flex border border-white/10 rounded-md gap-1">
                             <div>R$</div>
-                            <input type="number" value={launchValue} onChange={e => setLaunchValue(Number(e.target.value))}/>
+                            <input type="number" value={launchData.value || ''} onChange={e => setLaunchData(prev => ({...prev, value: Number(e.target.value)}))}/>
                         </div>
                     </div>
                     <div>
                         <label>Categoria</label>
                         <div>
-                            <select>
-                                <option>Selecione uma categoria</option>
+                            <select onChange={(e) => setLaunchData(prev => ({...prev, categoryId: Number(e.target.value)}))}>
+                                <option value="" className="bg-black">Selecione uma categoria</option>
+                                 {categories?.map(category => (
+                                <option key={category.id} className="bg-black" value={category.id}>{category.name}</option>
+                            ))}
                             </select>
                         </div>
                     </div>
                     <div>
                         <label>Data</label>
                         <div>
-                            <input type="date" className="border border-white/10 rounded-md w-full"/>
+                            <input type="date" className="border border-white/10 rounded-md w-full" onChange={(e) => setLaunchData(prev => ({...prev, date:e.target.value}))}/>
                         </div>
                     </div>
                     <div className="col-span-2 flex flex-col gap-2">
                         <label>Descrição</label>
-                            <textarea placeholder="Ex.: Salário, Aluguel, Compra no mercado..." className="border border-white/10 rounded-md p-1" value={launchDescription} onChange={e => setLaunchDescription(e.target.value)}/>
+                            <textarea placeholder="Ex.: Salário, Aluguel, Compra no mercado..." className="border border-white/10 rounded-md p-1" value={launchData.description || ""} onChange={e => setLaunchData(prev => ({...prev, description:e.target.value}))}/>
                     </div>
                 </form>
 
@@ -87,8 +106,8 @@ export default function LaunchModal({open, onClose}: Props){
 
                 {/*BOTÕES*/}
                 <div className="flex gap-2 justify-end items-end flex-1">
-                    <button className="border border-white/10 rounded-md">Cancelar</button>
-                    <button className="border border-white/10 rounded-md" onClick={() => createLaunch()}>Salvar lançamento</button>
+                    <button type="button" className="border border-white/10 rounded-md">Cancelar</button>
+                    <button type="button" className="border border-white/10 rounded-md" onClick={createLaunch}>Salvar lançamento</button>
                 </div>
 
             </div>

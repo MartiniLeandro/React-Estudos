@@ -19,7 +19,7 @@ export default function Launches(){
     }, [filters])
 
     useEffect(() => {
-        getCategories()
+        getCategories(filters, setCategories)
     }, [filters.typeValue])
 
     async function getLaunchesData(filters: launchesFilter) { //configurar os valores para deixar dinâmico de acordo com os lançamentos filtrados
@@ -37,17 +37,7 @@ export default function Launches(){
         }
     }
 
-    async function getCategories(){
-        const token = localStorage.getItem("token");
-        const typeValue = filters.typeValue;
-        try{
-            const response = await api.get<Category[]>("categories/filter", {params: typeValue ? {typeValue} : undefined,headers: {Authorization: `Bearer ${token}`}})
-            const data: Category[] = response.data
-            setCategories(data)
-        }catch(error: any){
-            console.log(error)
-        }
-    }
+
 
     function setFiltersCategory(event: React.ChangeEvent<HTMLSelectElement>){
         const typeValue = event.target.value;
@@ -183,3 +173,15 @@ export default function Launches(){
         </div>
     )
 }
+
+    export async function getCategories(filters: launchesFilter, setCategories: any ){
+        const token = localStorage.getItem("token");
+        const typeValue = filters.typeValue;
+        try{
+            const response = await api.get<Category[]>("categories/filter", {params: typeValue ? {typeValue} : undefined,headers: {Authorization: `Bearer ${token}`}})
+            const data: Category[] = response.data
+            setCategories(data)
+        }catch(error: any){
+            console.log(error)
+        }
+    }
