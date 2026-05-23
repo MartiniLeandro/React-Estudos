@@ -5,8 +5,10 @@ import type { Category, Launch, launchesFilter } from "../types/LaunchesData";
 
 interface Props{
     open: boolean,
-    onClose: () => void
-    launch: Launch | null;
+    onClose: () => void,
+    launch: Launch | null,
+    getLaunches: () => Promise<void>,
+    deleteModal: boolean
 } 
 
 interface LaunchRequest{
@@ -23,7 +25,7 @@ interface LaunchResponse{
     date?: string;
 }
 
-export default function LaunchModal({open, onClose, launch}: Props){
+export default function LaunchModal({open, onClose, launch, getLaunches, deleteModal}: Props){
     const [launchData, setLaunchData] = useState<LaunchRequest>({});
     const [filters, setFilters] = useState<launchesFilter>({})
     const [categories, setCategories] = useState<Category[]>();
@@ -44,7 +46,7 @@ export default function LaunchModal({open, onClose, launch}: Props){
         if(launch){
             await editLaunch()
         }else{
-            await  createLaunch()
+            await createLaunch()
         }
     }
 
@@ -54,6 +56,8 @@ export default function LaunchModal({open, onClose, launch}: Props){
             const response = await api.post<LaunchResponse>('/user/launches/create', launchData, {headers: {Authorization: `Bearer ${token}`}})
             const data = response.data
             console.log(data)
+            await getLaunches()
+            onClose()
             alert("Lançamento criado")
         }catch(error: any){
             console.log(error)
@@ -63,10 +67,55 @@ export default function LaunchModal({open, onClose, launch}: Props){
     }
 
     async function editLaunch(){
-        //criar função
+        const token = localStorage.getItem("token")
+        console.log(launchData)
+        try{
+            const response = await api.put<LaunchResponse>(`/user/launches/update/${launch?.id}`,launchData, {headers: {Authorization: `Bearer ${token}`}})
+            const data = response.data;
+            console.log(data)
+            await getLaunches()
+            onClose()
+            alert("Lançamento editado")
+        }catch(error: any){
+            console.log(error.response.data)
+        }
+    }
+
+    async function deleteLaunch(){
+
+        if(!launch){
+            return
+        }
+
+        const token = localStorage.getItem("token")
+        try{
+            const response = await api.delete(`user/launches/delete/${launch?.id}`, {headers: {Authorization: `Bearer ${token}`}})
+            const data = response.data;
+            console.log(data)
+            await getLaunches()
+            onClose()
+            alert("Lançamento deletado")
+        }catch(error: any){
+            console.log(error.response.data)
+        }
     }
 
     if(!open) return null
+
+    if(deleteModal) return (
+         <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center">
+            <div className=" bg-[#121821] rounded-2xl border border-white/10 p-6 w-1/4 h-2/5 flex flex-col items-center justify-around">
+                <div className="flex flex-col items-center gap-3">
+                    <h2 className="text-3xl">Deletar lançamento</h2>
+                    <p className="text-gray-400 text-center">Tem certeza que deseja deletar este lançamento? <br/>Essa ação não pode ser desfeita.</p>     
+                </div>
+                <div className="gap-2.5 flex">
+                    <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer" onClick={onClose}>Cancelar</button>
+                    <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer bg-red-600" onClick={deleteLaunch}>Deletar lançamento</button>
+                </div>
+            </div>
+        </div>
+    )
     return  (
         <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center">
             <div className=" bg-[#121821] rounded-2xl border border-white/10 p-6 w-1/3 h-2/3 flex flex-col">
@@ -77,7 +126,10 @@ export default function LaunchModal({open, onClose, launch}: Props){
                         <h2 className="text-xl mb-1.5">Novo lançamento</h2>
                         <p className="text-sm text-gray-400">Preencha os dados do lançamento</p>
                     </div>
-                    <button onClick={() => onClose()} className="cursor-pointer">X</button>
+                    <button onClick={() => {
+                        onClose()
+                        setLaunchData({})   
+                    }} className="cursor-pointer">X</button>
                 </div>
 
                 {/*FORMULÁRIO*/}
@@ -127,7 +179,7 @@ export default function LaunchModal({open, onClose, launch}: Props){
 
                 {/*BOTÕES*/}
                 <div className="flex gap-2 justify-end items-end flex-1">
-                    <button type="button" className="border border-white/10 rounded-md">Cancelar</button>
+                    <button type="button" className="border border-white/10 rounded-md" onClick={onClose}>Cancelar</button>
                     <button type="button" className="border border-white/10 rounded-md" onClick={handleSaveLaunch}>Salvar lançamento</button>
                 </div>
 

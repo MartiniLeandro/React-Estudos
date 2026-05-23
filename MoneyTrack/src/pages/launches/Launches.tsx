@@ -13,11 +13,16 @@ export default function Launches(){
     const [filters, setFilters] = useState<launchesFilter>({initialDate: '2025-09-01', finalDate: '2025-09-30'}) //data inicial para teste, o setFilters vai ser com o filtro do backend
     const [categories, setCategories] = useState<Category[]>([]) //colocar ícone em cada categoria (alterar no backend)
     const [openModal, setOpenModal] = useState(false)
+    const [deleteModal, setDeleteModal] = useState(false)
     const [launchData, setLaunchData] = useState<Launch | null>(null)
 
     useEffect(() => {
         getLaunchesData(filters)
     }, [filters])
+
+    useEffect(() => {
+        getLaunchesData(filters)
+    }, [launchData])
 
     useEffect(() => {
         getCategories(filters, setCategories)
@@ -39,11 +44,12 @@ export default function Launches(){
     }
 
     function handleCloseModal(){
+        if(deleteModal){
+            setDeleteModal(false)
+        }
         setOpenModal(false)
         setLaunchData(null)
     }
-
-
 
     function setFiltersCategory(event: React.ChangeEvent<HTMLSelectElement>){
         const typeValue = event.target.value;
@@ -81,7 +87,7 @@ export default function Launches(){
                     <div className="flex flex-col">
                         <label>Período</label>
                         <div className="bg-gray-950 p-1 rounded-md border border-white/10">
-                            <input type="date" value={filters.initialDate || ""} onChange={(e) => setFilters({...filters, initialDate: e.target.value})}/>
+                            <input type="date" value={filters.initialDate || ""} onChange={(e) => setFilters({...filters, initialDate: e.target.value})} className="mr-2"/>
                             <input type="date" value={filters.finalDate || ""} onChange={(e) => setFilters({...filters, finalDate: e.target.value})}/>
                         </div>
                     </div>
@@ -155,7 +161,11 @@ export default function Launches(){
                                             setOpenModal(true)
                                             setLaunchData(launch)
                                         }}/>
-                                        <Trash2 className="text-gray-200 cursor-pointer"/>
+                                        <Trash2 className="text-gray-200 cursor-pointer" onClick={() => {
+                                            setDeleteModal(true)
+                                            setOpenModal(true)
+                                            setLaunchData(launch)
+                                            }}/>
                                     </div>
                                 </td>
                                 </tr>
@@ -174,9 +184,9 @@ export default function Launches(){
                         </div>
                     </div>
 
-                {/*MODAL DE CRIAR LANÇAMENTO*/}
-                <LaunchModal open={openModal} onClose={handleCloseModal} launch={launchData}/>              
-
+                {/*MODAL DE CRIAR E EXCLUIR LANÇAMENTO*/}
+                <LaunchModal open={openModal} onClose={handleCloseModal} launch={launchData} getLaunches={() => getLaunchesData(filters)} deleteModal={deleteModal}/>         
+            
                 </div >
             </div>
         </div>
