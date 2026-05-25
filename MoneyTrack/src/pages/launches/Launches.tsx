@@ -3,7 +3,7 @@ import Card from "../../components/Card"
 import Sidebar from "../../components/Sidebar"
 import api from "../../services/Api"
 import type { launchesFilter, LaunchesData, Category, Launch} from "../../types/LaunchesData"
-import { Download, Pencil, Trash2 } from "lucide-react"
+import { ArrowDown, ArrowUp, Download, Equal, FileText, Pencil, Trash2, Wallet } from "lucide-react"
 import { formatCurrency, formatedDate } from "../home/Home"
 import { categoryIcons } from "../../utils/CategoryIcon"
 import LaunchModal from "../../components/LaunchModal"
@@ -115,10 +115,10 @@ export default function Launches(){
 
                 {/*CARDS*/}
                 <div className="flex">
-                    <Card title="Receitas" value={launchesData?.typeValues.revenue} formatValue ={true}/>
+                    <Card title="Receitas" value={launchesData?.typeValues.revenue} formatValue ={true} iconLaunchPage={{icon: ArrowUp, bgColor: "bg-green-400", color: "text-green-700"}}/>
                     <Card title="Despesas" value={launchesData?.typeValues.expense} formatValue ={true}/>
-                    <Card title="Saldo" value={launchesData?.totalValue} formatValue ={true}/>
-                    <Card title="Total" value={launchesData?.totalLaunches} formatValue ={false}/> 
+                    <Card title="Saldo Total" value={launchesData?.totalValue} formatValue ={true}/>
+                    <Card title="Qntd. Lançamentos" value={launchesData?.totalLaunches} formatValue ={false}/> 
                 </div>
 
 
