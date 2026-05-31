@@ -33,7 +33,7 @@ export default function Card({type, title, icon:Icon, value, formatValue, iconLa
       return(
         <div className="w-1/3 m-1 bg-[#121821] rounded-xl border border-white/10 flex gap-5 p-3.5 items-center">
           <div>
-            <div className={`${iconLaunchPage.bgColor} ${iconLaunchPage.color} rounded-full`}><Icon/></div>
+            <div className={`${iconLaunchPage.bgColor} ${iconLaunchPage.color} rounded-full p-2`}><Icon/></div>
           </div>
           <div>
             <div className="flex justify-between">

@@ -3,7 +3,7 @@ import Card from "../../components/Card"
 import Sidebar from "../../components/Sidebar"
 import api from "../../services/Api"
 import type { launchesFilter, LaunchesData, Category, Launch} from "../../types/LaunchesData"
-import { ArrowDown, ArrowUp, Download, Equal, FileText, Pencil, Trash2, Wallet } from "lucide-react"
+import { ArrowDown, ArrowUp, Download, Equal, FileText, Pencil, Search, Trash2} from "lucide-react"
 import { formatCurrency, formatedDate } from "../home/Home"
 import { categoryIcons } from "../../utils/CategoryIcon"
 import LaunchModal from "../../components/LaunchModal"
@@ -11,10 +11,11 @@ import LaunchModal from "../../components/LaunchModal"
 export default function Launches(){
     const [launchesData, setLaunchesData] = useState<LaunchesData>();
     const [filters, setFilters] = useState<launchesFilter>({initialDate: '2025-09-01', finalDate: '2025-09-30'}) //data inicial para teste, o setFilters vai ser com o filtro do backend
-    const [categories, setCategories] = useState<Category[]>([]) //colocar ícone em cada categoria (alterar no backend)
+    const [categories, setCategories] = useState<Category[]>([])
     const [openModal, setOpenModal] = useState(false)
     const [deleteModal, setDeleteModal] = useState(false)
     const [launchData, setLaunchData] = useState<Launch | null>(null)
+    const [searchDescription, setSearchDescription] = useState<string>("")
 
     useEffect(() => {
         getLaunchesData(filters)
@@ -28,7 +29,14 @@ export default function Launches(){
         getCategories(filters, setCategories)
     }, [filters.typeValue])
 
-    async function getLaunchesData(filters: launchesFilter) { //configurar os valores para deixar dinâmico de acordo com os lançamentos filtrados
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            setFilters(prevFilters => ({...prevFilters, description: searchDescription}))
+        },500)
+        return () => clearTimeout(delayDebounceFn)
+    }, [searchDescription])
+
+    async function getLaunchesData(filters: launchesFilter) {
         const token = localStorage.getItem("token")
         console.log(filters.categoryId)
         filters.categoryId = filters.categoryId == 0 ? undefined : filters.categoryId
@@ -108,17 +116,18 @@ export default function Launches(){
                             ))}
                         </select>
                     </div>
-                    <div className="flex flex-col">
-                        <input type="text" placeholder="Buscar lançamento"/>
+                    <div className="flex items-end justify-end bg-gray-950 p-1 rounded-md border border-white/10 mt-3.5">
+                        <input type="text" placeholder="Buscar lançamento" value={searchDescription} onChange={(e) => setSearchDescription(e.target.value)}/>
+                        <Search/>
                     </div>              
                 </form>
 
                 {/*CARDS*/}
                 <div className="flex">
-                    <Card title="Receitas" value={launchesData?.typeValues.revenue} formatValue ={true} iconLaunchPage={{icon: ArrowUp, bgColor: "bg-green-400", color: "text-green-700"}}/>
-                    <Card title="Despesas" value={launchesData?.typeValues.expense} formatValue ={true}/>
-                    <Card title="Saldo Total" value={launchesData?.totalValue} formatValue ={true}/>
-                    <Card title="Qntd. Lançamentos" value={launchesData?.totalLaunches} formatValue ={false}/> 
+                    <Card title="Receitas" value={launchesData?.typeValues.revenue} formatValue ={true} iconLaunchPage={{icon: ArrowUp, bgColor: "bg-emerald-500/10", color: "text-emerald-500"}}/>
+                    <Card title="Despesas" value={launchesData?.typeValues.expense} formatValue ={true} iconLaunchPage={{icon: ArrowDown, bgColor: "bg-rose-500/10", color: "text-rose-500"}}/>
+                    <Card title="Saldo Total" value={launchesData?.totalValue} formatValue ={true} iconLaunchPage={{icon: Equal, bgColor: "bg-amber-500/10", color: "text-amber-500"}}/>
+                    <Card title="Qntd. Lançamentos" value={launchesData?.totalLaunches} formatValue ={false} iconLaunchPage={{icon: FileText, bgColor: "bg-blue-500/10", color: "text-blue-500"}}/> 
                 </div>
 
 

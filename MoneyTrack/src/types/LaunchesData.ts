@@ -36,5 +36,6 @@ export interface launchesFilter {
     initialDate?: string,
     finalDate?: string,
     typeValue?: string,
-    categoryId?: number
+    categoryId?: number,
+    description?: string;
 }
