@@ -18,8 +18,9 @@ export interface Category {
     id: number,
     name: string,
     typeValue: string,
-    icon: string
-
+    icon: string,
+    color: string,
+    userId: number
 }
 
 interface TypeValues {

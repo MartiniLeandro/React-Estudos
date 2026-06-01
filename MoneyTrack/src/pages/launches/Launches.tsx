@@ -42,9 +42,7 @@ export default function Launches(){
         filters.categoryId = filters.categoryId == 0 ? undefined : filters.categoryId
         try{
             const response = await api.get<LaunchesData>("user/launches/data", {params: filters, headers: {Authorization: `Bearer ${token}`}})
-            console.log(response.request)
-            const data:LaunchesData = response.data
-            console.log(data)
+            const data:LaunchesData = response.data;
             setLaunchesData(data)
         }catch(error: any){
             console.log(error)
@@ -148,7 +146,7 @@ export default function Launches(){
                             </tr>
                             </thead>
                             <tbody>
-                            {launchesData?.launches.map(launch => { //ordernar por data os lançamentos
+                            {launchesData?.launches.map(launch => {
                                 const Icon = categoryIcons[launch.category.icon];
 
                                 return(
@@ -157,8 +155,8 @@ export default function Launches(){
                                 <td>{launch.description}</td>
                                 <td>
                                     <div className="flex items-center gap-2">
-                                        {Icon && <div className="p-0.5 border border-blue-700 rounded-full"><Icon className="text-blue-700"/></div>}
-                                        <span>{launch.category.name}</span>
+                                        {Icon && <div className="p-0.5 border rounded-full" style={{borderColor: launch.category.color, backgroundColor: `${launch.category.color}15`}}><Icon style={{color: launch.category.color}}/></div>}
+                                        <span>{launch.category.name} | {launch.category.color}</span>
                                     </div>
                                     </td>
                                 {launch.category.typeValue == 'REVENUE' ? <td><span className="bg-green-950 p-1 text-green-400 rounded-md">Receita</span></td> : 
