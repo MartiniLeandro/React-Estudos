@@ -9,7 +9,7 @@ export default function Sidebar(){
           <div className="flex flex-col mt-10">
             <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><House/> <Link to="/">Início</Link></div>
             <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><ReceiptText/> <Link to="/launches">Lançamentos</Link></div>
-            <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><ChartPie/> Resumo</div>
+            <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><ChartPie/> Categorias</div>
           </div>
         </div>
     )

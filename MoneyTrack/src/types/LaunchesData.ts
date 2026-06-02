@@ -9,7 +9,7 @@ export interface LaunchesData {
 export interface Launch {
     id: number,
     description: string,
-    category: Category //trocar isso depois no backend, não receber a category completa
+    category: Category
     value: number,
     date: string
 }

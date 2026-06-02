@@ -7,6 +7,7 @@ import Card from "../../components/Card";
 import Sidebar from "../../components/Sidebar";
 import { Link } from "react-router-dom";
 import { colors } from "../../components/DoughnutCategory";
+import { categoryIcons } from "../../utils/CategoryIcon";
 
 
 export default function Home() {
@@ -88,15 +89,22 @@ export default function Home() {
                   </tr>
                 </thead>
                 <tbody>
-                  {dashboardData?.lastLaunches.map(launch => ( //colocar o ícone
+                  {dashboardData?.lastLaunches.map(launch => {
+                    const Icon = categoryIcons[launch.categoryIcon]
+                    return ( //colocar o ícone
                     <tr key={launch.id} className="border border-white/5 hover:bg-white/10 transition">
                       <td className="py-4 pl-4 text-left">{formatedDate(launch.date)}</td>
                       <td>{launch.description}</td>
-                      <td>{launch.category}</td>
-                      {launch.typeValue === "REVENUE" ? <td className="text-emerald-400"><ArrowUp/></td> : <td className="text-red-400"><ArrowDown/></td>}
-                      {launch.typeValue === "REVENUE" ? <td className="text-emerald-400">{formatCurrency(launch.value)}</td> : <td className="text-red-400">{formatCurrency(launch.value)}</td>}
+                      <td>
+                        <div className="flex items-center gap-2">
+                          {Icon && <div className="p-0.5 border rounded-full" style={{borderColor: launch.categoryColor, backgroundColor: `${launch.categoryColor}15`}}><Icon style={{color: launch.categoryColor}}/></div>}
+                          {launch.categoryName}
+                        </div>
+                      </td>
+                      {launch.typeValue === "REVENUE" ? <td><div className="bg-emerald-500/10 text-emerald-500 rounded-full inline-flex p-1"><ArrowUp/></div></td> : <td><div className="bg-rose-500/10 text-rose-500 rounded-full inline-flex p-1"><ArrowDown/></div></td>}
+                      {launch.typeValue === "REVENUE" ? <td className="text-emerald-400 font-bold">{formatCurrency(launch.value)}</td> : <td className="text-red-400 font-bold">{formatCurrency(launch.value)}</td>}
                     </tr>
-                    ))}
+                    )})}
                 </tbody>
               </table>
             </div>

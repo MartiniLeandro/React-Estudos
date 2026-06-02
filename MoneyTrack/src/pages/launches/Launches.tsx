@@ -10,7 +10,7 @@ import LaunchModal from "../../components/LaunchModal"
 
 export default function Launches(){
     const [launchesData, setLaunchesData] = useState<LaunchesData>();
-    const [filters, setFilters] = useState<launchesFilter>({initialDate: '2025-09-01', finalDate: '2025-09-30'}) //data inicial para teste, o setFilters vai ser com o filtro do backend
+    const [filters, setFilters] = useState<launchesFilter>({initialDate: '2026-06-01', finalDate: '2026-06-30'})
     const [categories, setCategories] = useState<Category[]>([])
     const [openModal, setOpenModal] = useState(false)
     const [deleteModal, setDeleteModal] = useState(false)
@@ -156,7 +156,7 @@ export default function Launches(){
                                 <td>
                                     <div className="flex items-center gap-2">
                                         {Icon && <div className="p-0.5 border rounded-full" style={{borderColor: launch.category.color, backgroundColor: `${launch.category.color}15`}}><Icon style={{color: launch.category.color}}/></div>}
-                                        <span>{launch.category.name} | {launch.category.color}</span>
+                                        <span>{launch.category.name}</span>
                                     </div>
                                     </td>
                                 {launch.category.typeValue == 'REVENUE' ? <td><span className="bg-green-950 p-1 text-green-400 rounded-md">Receita</span></td> : 

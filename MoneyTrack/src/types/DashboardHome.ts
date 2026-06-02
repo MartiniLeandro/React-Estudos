@@ -19,6 +19,8 @@ interface LastLaunches {
     description: string,
     value: number,
     date: string,
-    category: string,
     typeValue: string
+    categoryName: string,
+    categoryIcon: string,
+    categoryColor: string
 }
