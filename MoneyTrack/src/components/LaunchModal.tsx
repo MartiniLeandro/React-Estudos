@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../services/Api";
 import { getCategories } from "../pages/launches/Launches";
 import type { Category, Launch, launchesFilter } from "../types/LaunchesData";
+import toast from "react-hot-toast";
 
 interface Props{
     open: boolean,
@@ -50,34 +51,69 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
         }
     }
 
+    function launchIsValid(launch:LaunchRequest):boolean{
+        if(!launch.value || launch.value <= 0){
+            toast.error("O valor deve ser maior que zero.");
+            return false;
+        }
+        
+        if(!launch.categoryId){
+            toast.error("Por favor, selecione uma categoria.");
+            return false;
+        }
+        
+        if(!launch.date){
+            toast.error("Por favor, informe a data do lançamento.");
+            return false;
+        }
+
+        if(!launch.description || launch.description.trim() === ""){
+            toast.error("A descrição do lançamento é obrigatória.");
+            return false;
+        }
+        return true;
+    }
+
     async function createLaunch(){
+
+        if(!launchIsValid(launchData)){
+            return;
+        }
+        
         const token = localStorage.getItem("token")
         try{
-            const response = await api.post<LaunchResponse>('/user/launches/create', launchData, {headers: {Authorization: `Bearer ${token}`}})
-            const data = response.data
-            console.log(data)
+            await api.post<LaunchResponse>('/user/launches/create', launchData, {headers: {Authorization: `Bearer ${token}`}})
             await getLaunches()
             onClose()
-            alert("Lançamento criado")
+            toast.success("Lançamento criado com sucesso")
+            setLaunchData({})
         }catch(error: any){
-            console.log(error)
-        }finally{
-            console.log(launchData)
+            if(error.response?.data?.message){
+                toast.error(error.response.data.message)
+            }else{
+                toast.error("Erro interno. Por favor, tentar novamente mais tarde") 
+            }
         }
     }
 
     async function editLaunch(){
+
+        if(!launchIsValid(launchData)){
+            return;
+        }
+
         const token = localStorage.getItem("token")
-        console.log(launchData)
         try{
-            const response = await api.put<LaunchResponse>(`/user/launches/update/${launch?.id}`,launchData, {headers: {Authorization: `Bearer ${token}`}})
-            const data = response.data;
-            console.log(data)
+            await api.put<LaunchResponse>(`/user/launches/update/${launch?.id}`,launchData, {headers: {Authorization: `Bearer ${token}`}})
             await getLaunches()
             onClose()
-            alert("Lançamento editado")
+            toast.success("Lançamento editado com sucesso")
         }catch(error: any){
-            console.log(error.response.data)
+            if(error.response?.data?.message){
+                toast.error(error.response.data.message)
+            }else{
+                toast.error("Erro interno. Por favor, tentar novamente mais tarde") 
+            }
         }
     }
 
@@ -89,12 +125,10 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
 
         const token = localStorage.getItem("token")
         try{
-            const response = await api.delete(`user/launches/delete/${launch?.id}`, {headers: {Authorization: `Bearer ${token}`}})
-            const data = response.data;
-            console.log(data)
+            await api.delete(`user/launches/delete/${launch?.id}`, {headers: {Authorization: `Bearer ${token}`}})
             await getLaunches()
             onClose()
-            alert("Lançamento deletado")
+            toast.success("Lançamento excluido com sucesso")
         }catch(error: any){
             console.log(error.response.data)
         }
