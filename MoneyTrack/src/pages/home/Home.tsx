@@ -91,7 +91,7 @@ export default function Home() {
                 <tbody>
                   {dashboardData?.lastLaunches.map(launch => {
                     const Icon = categoryIcons[launch.categoryIcon]
-                    return ( //colocar o ícone
+                    return (
                     <tr key={launch.id} className="border border-white/5 hover:bg-white/10 transition">
                       <td className="py-4 pl-4 text-left">{formatedDate(launch.date)}</td>
                       <td>{launch.description}</td>
