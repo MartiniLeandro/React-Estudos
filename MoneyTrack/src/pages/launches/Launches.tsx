@@ -38,7 +38,6 @@ export default function Launches(){
 
     async function getLaunchesData(filters: launchesFilter) {
         const token = localStorage.getItem("token")
-        console.log(filters.categoryId)
         filters.categoryId = filters.categoryId == 0 ? undefined : filters.categoryId
         try{
             const response = await api.get<LaunchesData>("user/launches/data", {params: filters, headers: {Authorization: `Bearer ${token}`}})

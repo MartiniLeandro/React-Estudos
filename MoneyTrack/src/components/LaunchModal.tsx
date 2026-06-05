@@ -3,6 +3,7 @@ import api from "../services/Api";
 import { getCategories } from "../pages/launches/Launches";
 import type { Category, Launch, launchesFilter } from "../types/LaunchesData";
 import toast from "react-hot-toast";
+import { ChevronDown, Lightbulb } from "lucide-react";
 
 interface Props{
     open: boolean,
@@ -163,6 +164,7 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
                     <button onClick={() => {
                         onClose()
                         setLaunchData({})   
+                        setFilters({})
                     }} className="cursor-pointer">X</button>
                 </div>
 
@@ -171,50 +173,59 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
                     <div>
                         <label>Tipo</label>
                         <div className="grid grid-cols-2 gap-2">
-                            <button type="button" className="border border-white/10 rounded-md cursor-pointer" onClick={() => setFilters({...filters, typeValue: "REVENUE"})}>Receita</button>
-                            <button type="button" className="border border-white/10 rounded-md cursor-pointer" onClick={() => setFilters({...filters, typeValue: "EXPENSE"})}>Despesa</button>
+                            <button type="button" className={`border border-white/10 rounded-md cursor-pointer p-2 ${filters.typeValue === "REVENUE" ? "bg-emerald-500/20 border-emerald-500 text-emerald-400 font-medium" : "border-white/10 text-gray-400 hover:bg-emerald-500/10 hover:border-emerald-500/50 hover:text-emerald-400"}}`} onClick={() => setFilters({...filters, typeValue: "REVENUE"})}>Receita</button>
+                            <button type="button" className={`border border-white/10 rounded-md cursor-pointer ${filters.typeValue === "EXPENSE" ? "bg-red-500/20 border-red-500 text-red-400 font-medium" : "border-white/10 text-gray-400 hover:bg-red-500/10 hover:border-red-500/50 hover:text-red-400"}`} onClick={() => setFilters({...filters, typeValue: "EXPENSE"})}>Despesa</button>
                         </div>
                     </div>
                     <div>
                         <label>Valor</label>
-                        <div className="flex border border-white/10 rounded-md gap-1">
+                        <div className="flex border border-white/10 rounded-md gap-2 p-2">
                             <div>R$</div>
-                            <input type="number" value={launchData.value || ''} onChange={e => setLaunchData(prev => ({...prev, value: Number(e.target.value)}))}/>
+                            <input type="number" value={launchData.value || ''} onChange={e => setLaunchData(prev => ({...prev, value: Number(e.target.value)}))} placeholder="0,00" className="bg-transparent focus:outline-none focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"/*Estilo para tirar as bordar e icones padrões do input*//>
                         </div>
                     </div>
-                    <div>
-                        <label>Categoria</label>
-                        <div>
-                            <select value={launchData.categoryId || ""} onChange={(e) => setLaunchData(prev => ({...prev, categoryId: Number(e.target.value)}))}>
-                                <option value="" className="bg-black">Selecione uma categoria</option>
-                                 {categories?.map(category => (
-                                <option key={category.id} className="bg-black" value={category.id}>{category.name}</option>
-                            ))}
+                    <div className="flex flex-col gap-2">
+                        <label className="text-sm">Categoria</label>
+                        <div className="relative">
+                            <select 
+                                value={launchData.categoryId || ""} onChange={(e) => setLaunchData(prev => ({...prev, categoryId: Number(e.target.value)}))} className="w-full appearance-none bg-transparent border border-white/10 rounded-md px-3 py-2 focus:outline-none focus:border-emerald-500 focus:ring-0 cursor-pointer">
+                                <option value="" className="bg-[#121821] text-gray-400">Selecione uma categoria</option>
+                                {categories?.map(category => (
+                                    <option key={category.id} className="bg-[#121821]" value={category.id}>
+                                        {category.name}
+                                    </option>
+                                ))}
                             </select>
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <ChevronDown size={18} />
+                            </div>
                         </div>
                     </div>
                     <div>
-                        <label>Data</label>
+                        <label className="text-sm mb-2 block">Data</label>
                         <div>
-                            <input type="date" value={launchData.date != null ? launchData.date : ""} className="border border-white/10 rounded-md w-full" onChange={(e) => setLaunchData(prev => ({...prev, date:e.target.value}))}/>
+                            <input type="date" value={launchData.date || ""} onChange={(e) => setLaunchData(prev => ({...prev, date:e.target.value}))} className="w-full bg-transparent border border-white/10 rounded-md px-3 py-2 focus:outline-none focus:border-emerald-500 focus:ring-0" />
                         </div>
                     </div>
                     <div className="col-span-2 flex flex-col gap-2">
-                        <label>Descrição</label>
-                            <textarea placeholder="Ex.: Salário, Aluguel, Compra no mercado..." className="border border-white/10 rounded-md p-1" value={launchData.description || ""} onChange={e => setLaunchData(prev => ({...prev, description:e.target.value}))}/>
+                        <label className="text-sm">Descrição</label>
+                        <textarea placeholder="Ex.: Salário, Aluguel, Compra no mercado..." value={launchData.description || ""} onChange={e => setLaunchData(prev => ({...prev, description:e.target.value}))} rows={3} className="w-full bg-transparent border border-white/10 rounded-md px-3 py-2 resize-none focus:outline-none focus:border-emerald-500 focus:ring-0"/>
                     </div>
                 </form>
 
                 {/*DICA*/}
-                <div className="border border-white/10 rounded-md mt-10">
-                    <h3>Dica</h3>
-                    <p>Manter seus lançamentos organizados ajuda você a ter uma visão clara das suas finanças</p>
+                <div className="border border-white/10 rounded-md mt-10 flex gap-3">
+                    <div className="flex items-center rounded-full w-10 h-10 justify-center bg-emerald-500/10 text-emerald-500 m-2.5"><Lightbulb/></div>
+                    <div className="flex flex-col">
+                        <h3 className="text-xl mb-1.5">Dica</h3>
+                        <p className="text-sm text-gray-400">Manter seus lançamentos organizados ajuda você a ter uma visão clara das suas finanças</p>
+                    </div>
                 </div>
 
                 {/*BOTÕES*/}
                 <div className="flex gap-2 justify-end items-end flex-1">
-                    <button type="button" className="border border-white/10 rounded-md" onClick={onClose}>Cancelar</button>
-                    <button type="button" className="border border-white/10 rounded-md" onClick={handleSaveLaunch}>Salvar lançamento</button>
+                    <button type="button" className="border border-white/10 rounded-md p-2.5 cursor-pointer hover:bg-black/50" onClick={onClose}>Cancelar</button>
+                    <button type="button" className="border border-white/10 rounded-md p-2.5 cursor-pointer bg-green-600 hover:bg-green-700" onClick={handleSaveLaunch}>Salvar lançamento</button>
                 </div>
 
             </div>
