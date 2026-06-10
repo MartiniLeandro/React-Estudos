@@ -10,7 +10,9 @@ interface Props{
     onClose: () => void,
     launch: Launch | null,
     getLaunches: () => Promise<void>,
-    deleteModal: boolean
+    deleteModal: boolean,
+    exportLaunches: boolean,
+    launchesFilter: launchesFilter;
 } 
 
 interface LaunchRequest{
@@ -27,7 +29,7 @@ interface LaunchResponse{
     date?: string;
 }
 
-export default function LaunchModal({open, onClose, launch, getLaunches, deleteModal}: Props){
+export default function LaunchModal({open, onClose, launch, getLaunches, deleteModal, exportLaunches, launchesFilter}: Props){
     const [launchData, setLaunchData] = useState<LaunchRequest>({});
     const [filters, setFilters] = useState<launchesFilter>({})
     const [categories, setCategories] = useState<Category[]>();
@@ -135,6 +137,32 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
         }
     }
 
+    async function exportLaunchesFunction(){
+        const token = localStorage.getItem("token");
+        try{
+            const response = await api.get("user/launches/export", {params: launchesFilter ,responseType: 'blob' ,headers: {Authorization: `Bearer ${token}`}})
+            const blob = new Blob([response.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})
+            const urlTemporaria = window.URL.createObjectURL(blob);
+
+            const linkInvisivel = document.createElement('a');
+            linkInvisivel.href = urlTemporaria;
+        
+            linkInvisivel.setAttribute('download', 'extrato_moneyTrack.xlsx'); 
+        
+            document.body.appendChild(linkInvisivel);
+            linkInvisivel.click();
+            document.body.removeChild(linkInvisivel);
+
+            window.URL.revokeObjectURL(urlTemporaria);
+            onClose()
+            
+            toast.success("Lançamentos exportados com sucesso")
+
+        }catch(error:any){
+            toast.error("Não foi possível gerar o arquivo. Tente novamente")
+        }
+    }
+
     if(!open) return null
 
     if(deleteModal) return (
@@ -147,6 +175,21 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
                 <div className="gap-2.5 flex">
                     <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer" onClick={onClose}>Cancelar</button>
                     <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer bg-red-600" onClick={deleteLaunch}>Deletar lançamento</button>
+                </div>
+            </div>
+        </div>
+    )
+
+    if(exportLaunches) return (
+                 <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center">
+            <div className=" bg-[#121821] rounded-2xl border border-white/10 p-6 w-1/4 h-2/5 flex flex-col items-center justify-around">
+                <div className="flex flex-col items-center gap-3">
+                    <h2 className="text-3xl">Exportar lançamentos</h2>
+                    <p className="text-gray-400 text-center">Tem certeza que deseja exportar estes lançamentos? <br/>Obs: Será baixado um arquivo excel</p>     
+                </div>
+                <div className="gap-2.5 flex">
+                    <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer" onClick={onClose}>Cancelar</button>
+                    <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer bg-emerald-500/70" onClick={exportLaunchesFunction}>Exportar lançamentos</button>
                 </div>
             </div>
         </div>

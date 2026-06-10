@@ -7,7 +7,6 @@ import { ArrowDown, ArrowUp, Download, Equal, FileText, Pencil, Search, Trash2} 
 import { formatCurrency, formatedDate } from "../home/Home"
 import { categoryIcons } from "../../utils/CategoryIcon"
 import LaunchModal from "../../components/LaunchModal"
-import toast from "react-hot-toast"
 
 export default function Launches(){
     const [launchesData, setLaunchesData] = useState<LaunchesData>();
@@ -17,6 +16,7 @@ export default function Launches(){
     const [deleteModal, setDeleteModal] = useState(false)
     const [launchData, setLaunchData] = useState<Launch | null>(null)
     const [searchDescription, setSearchDescription] = useState<string>("")
+    const [exportModal, setExportModal] = useState(false);
 
     useEffect(() => {
         getLaunchesData(filters)
@@ -53,6 +53,9 @@ export default function Launches(){
         if(deleteModal){
             setDeleteModal(false)
         }
+        if(exportModal){
+            setExportModal(false)
+        }
         setOpenModal(false)
         setLaunchData(null)
     }
@@ -60,29 +63,6 @@ export default function Launches(){
     function setFiltersCategory(event: React.ChangeEvent<HTMLSelectElement>){
         const typeValue = event.target.value;
         setFilters({...filters, typeValue: typeValue ? typeValue.toUpperCase() : undefined})
-    }
-
-    async function exportLaunches(){
-        const token = localStorage.getItem("token");
-        try{
-            const response = await api.get("user/launches/export", {params: filters ,responseType: 'blob' ,headers: {Authorization: `Bearer ${token}`}})
-            const blob = new Blob([response.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})
-            const urlTemporaria = window.URL.createObjectURL(blob);
-
-            const linkInvisivel = document.createElement('a');
-            linkInvisivel.href = urlTemporaria;
-        
-            linkInvisivel.setAttribute('download', 'extrato_moneyTrack.xlsx'); 
-        
-            document.body.appendChild(linkInvisivel);
-            linkInvisivel.click();
-            document.body.removeChild(linkInvisivel);
-
-            window.URL.revokeObjectURL(urlTemporaria);
-
-        }catch(error:any){
-            toast.error("Não foi possível gerar o arquivo. Tente novamente")
-        }
     }
 
     return(
@@ -101,7 +81,7 @@ export default function Launches(){
                         <p className="text-gray-400">Gerencia seus lançamentos financeiros</p>
                     </div>
                     <div className="flex h-12">
-                        <button className="border border-white/10 rounded-md mr-4 p-1.5" onClick={exportLaunches}> 
+                        <button className="border border-white/10 rounded-md mr-4 p-1.5" onClick={() => {setOpenModal(true), setExportModal(true)}}> 
                             <div className="flex gap-2.5 cursor-pointer">
                                 <Download className="text-green-400"/>
                                 <span>Exportar</span>
@@ -215,7 +195,7 @@ export default function Launches(){
                     </div>
 
                 {/*MODAL DE CRIAR E EXCLUIR LANÇAMENTO*/}
-                <LaunchModal open={openModal} onClose={handleCloseModal} launch={launchData} getLaunches={() => getLaunchesData(filters)} deleteModal={deleteModal}/>         
+                <LaunchModal open={openModal} onClose={handleCloseModal} launch={launchData} getLaunches={() => getLaunchesData(filters)} deleteModal={deleteModal} exportLaunches={exportModal} launchesFilter={filters}/>         
             
                 </div >
             </div>
