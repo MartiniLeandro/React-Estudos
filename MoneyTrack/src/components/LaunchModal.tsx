@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/Api";
-import { getCategories } from "../pages/launches/Launches";
+import { getCategories } from "../pages/launches/LaunchesPage";
 import type { Category, Launch, launchesFilter } from "../types/LaunchesData";
 import toast from "react-hot-toast";
 import { ChevronDown, Lightbulb } from "lucide-react";

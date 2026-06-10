@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { formatCurrency } from "../pages/home/Home"
+import { formatCurrency } from "../pages/home/HomePage"
 
 interface Props {
   type?: string,

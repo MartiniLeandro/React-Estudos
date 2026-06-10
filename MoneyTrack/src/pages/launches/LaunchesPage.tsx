@@ -4,7 +4,7 @@ import Sidebar from "../../components/Sidebar"
 import api from "../../services/Api"
 import type { launchesFilter, LaunchesData, Category, Launch} from "../../types/LaunchesData"
 import { ArrowDown, ArrowUp, Download, Equal, FileText, Pencil, Search, Trash2} from "lucide-react"
-import { formatCurrency, formatedDate } from "../home/Home"
+import { formatCurrency, formatedDate } from "../home/HomePage"
 import { categoryIcons } from "../../utils/CategoryIcon"
 import LaunchModal from "../../components/LaunchModal"
 
