@@ -1,10 +1,11 @@
 import { useState, type SubmitEvent } from "react"
 import api from "../../services/Api"
 import type { LoginRequest } from "../../types/Auth"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 import { ChartNoAxesColumnIncreasing, Lock, PieChart } from "lucide-react"
 import AuthLayout from "../../components/AuthLayout"
+import GoogleIcon from "../../components/GoogleIcon"
 
 export default function Login(){
     const [email, setEmail] = useState("")
@@ -86,8 +87,8 @@ export default function Login(){
                     <span className="text-gray-400 text-sm">ou</span>
                     <div className="flex-1 h-px bg-white/10"></div>
                 </div>
-                <button  type="button" className="w-full py-3 border border-white/10 rounded-lg hover:bg-white/5 transition cursor-pointer">Entrar com Google</button>
-                <p className="text-center text-sm text-gray-400 mt-4"> Ainda não tem uma conta?{" "} <span className="text-green-500 hover:underline cursor-pointer">cadastre-se</span>
+                <button  type="button" className="w-full py-3 border border-white/10 rounded-lg hover:bg-white/5 transition cursor-pointer flex items-center justify-center gap-2">Entrar com Google<GoogleIcon/></button>
+                <p className="text-center text-sm text-gray-400 mt-4"> Ainda não tem uma conta?{" "} <Link to="/register"><span className="text-green-500 hover:underline cursor-pointer">cadastre-se</span></Link>
                 </p>
             </form> 
     </AuthLayout>
