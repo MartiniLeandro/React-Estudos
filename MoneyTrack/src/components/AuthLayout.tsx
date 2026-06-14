@@ -1,4 +1,4 @@
-import {type ReactNode } from 'react'
+import type { ReactNode } from 'react';
 import logo from '../../public/logo (2).png'
 import imageLogin from '../../public/image login.png'
 
@@ -37,8 +37,8 @@ export default function AuthLayout({title, subtitle, featuresItems, children}: A
                         <p className="text-gray-400 mb-10">{subtitle}</p>
                     </div>
                     <div className="space-y-6">
-                        {featuresItems.map(feature => (
-                            <div className="flex items-center gap-4">
+                        {featuresItems.map((feature, index) => (
+                            <div key={index} className="flex items-center gap-4">
                                 <div className="bg-[#121821]/80 p-3 rounded-xl">{feature.icon}</div>
                                 <div>
                                     <h3 className="font-medium">{feature.title}</h3>

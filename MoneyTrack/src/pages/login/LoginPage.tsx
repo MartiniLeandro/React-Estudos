@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 import { ChartNoAxesColumnIncreasing, Lock, PieChart } from "lucide-react"
 import AuthLayout from "../../components/AuthLayout"
-import GoogleIcon from "../../components/GoogleIcon"
+import { GoogleLogin } from "@react-oauth/google"
 
 export default function Login(){
     const [email, setEmail] = useState("")
@@ -41,6 +41,25 @@ export default function Login(){
         }
     }
 
+    async function loginWithGoogle(credentialResponse: any){
+
+        const tokenGoogle = credentialResponse.credential;
+
+        try{
+            const response = await api.post("/authentication/login/google", {tokenGoogle: tokenGoogle})
+            const token = response.data.token;
+            localStorage.setItem("token", token)
+            navigate("/")
+            toast.success("Login realizado com sucesso")
+        }catch(error: any){
+            if(error.response?.data?.message){
+                toast.error(error.response.data.message)
+           }else{
+            toast.error("Erro interno. Por favor, tente novamente mais tarde")
+           }
+        }
+    }
+
     const featuresDoLogin = [
         {   icon: <ChartNoAxesColumnIncreasing className="text-green-500"/>,
             title: "Acompanhe seus gastos",
@@ -58,7 +77,7 @@ export default function Login(){
 
     return(
 
-        <AuthLayout title={<h2>Bem-vindo de <span className="text-green-500">volta!</span></h2>} subtitle="Faça login para continuar gerenciando suas finanças" 
+        <AuthLayout title={<>Bem-vindo de <span className="text-green-500">volta!</span></>} subtitle="Faça login para continuar gerenciando suas finanças" 
             featuresItems={featuresDoLogin}
         >
             <h2 className="text-2xl font-semibold mb-2">
@@ -87,7 +106,7 @@ export default function Login(){
                     <span className="text-gray-400 text-sm">ou</span>
                     <div className="flex-1 h-px bg-white/10"></div>
                 </div>
-                <button  type="button" className="w-full py-3 border border-white/10 rounded-lg hover:bg-white/5 transition cursor-pointer flex items-center justify-center gap-2">Entrar com Google<GoogleIcon/></button>
+                <GoogleLogin onSuccess={loginWithGoogle} onError={() => toast.error("Falha ao abrir o google")} theme="filled_black" shape="rectangular"/>
                 <p className="text-center text-sm text-gray-400 mt-4"> Ainda não tem uma conta?{" "} <Link to="/register"><span className="text-green-500 hover:underline cursor-pointer">cadastre-se</span></Link>
                 </p>
             </form> 

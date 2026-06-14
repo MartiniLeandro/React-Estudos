@@ -74,7 +74,7 @@ export default function Register(){
 
     return(
         <AuthLayout 
-            title={<h2>Crie a sua conta e <span className="text-green-500">comece agora!</span></h2>}
+            title={<>Crie a sua conta e <span className="text-green-500">comece agora!</span></>}
             subtitle="É rápido, fácil e gratuito. Organize agora suas finanças de forma inteligente"
             featuresItems={features}
         >
