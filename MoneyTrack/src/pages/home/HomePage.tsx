@@ -8,6 +8,7 @@ import Sidebar from "../../components/Sidebar";
 import { Link } from "react-router-dom";
 import { colors } from "../../components/DoughnutCategory";
 import { categoryIcons } from "../../utils/CategoryIcon";
+import { useProfileData } from "../../hooks/useProfileData";
 
 
 export default function Home() {
@@ -15,6 +16,11 @@ export default function Home() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [categoryType, setCategoryType] = useState<"revenue" | "expense">("revenue");
+  const {getProfileData, name} = useProfileData();
+
+  useEffect(() => {
+    getProfileData()
+  }, [])
 
   useEffect(() => {
     getDadosDashboard(year,month)
@@ -56,7 +62,7 @@ export default function Home() {
           {/*HEADER */}
           <div className="flex justify-between items-center">
             <div className="m-1">
-              <h2 className="text-2xl font-bold">Olá, User👋</h2>
+              <h2 className="text-2xl font-bold">Olá, {name}👋</h2>
               <p className="text-gray-400">Aqui está o resumo das suas finanças.</p>
             </div>
             <input type="month" className="rounded-xl border border-white/20 p-2.5" value={`${year}-${String(month).padStart(2, "0")}`} onChange={changeDate}/>

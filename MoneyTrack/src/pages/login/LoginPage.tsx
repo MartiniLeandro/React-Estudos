@@ -7,13 +7,14 @@ import { ChartNoAxesColumnIncreasing, Lock, PieChart } from "lucide-react"
 import AuthLayout from "../../components/AuthLayout"
 import { GoogleLogin } from "@react-oauth/google"
 import { AuthModal } from "../../components/AuthModal"
+import { useGoogleAuth } from "../../hooks/useGoogleAuth"
 
 export default function Login(){
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [showAuthModal, setShowAuthModal] = useState(false)
-    const [tokenGoogle, setTokenGoogle] = useState("")
     const navigate = useNavigate()
+
+    const {loginWithGoogle, showAuthModal, setShowAuthModal, tokenGoogle} = useGoogleAuth();
 
     async function login(e: SubmitEvent){
         e.preventDefault()
@@ -41,26 +42,6 @@ export default function Login(){
             toast.error("Erro interno. Por favor, tente novamente mais tarde")
            }
 
-        }
-    }
-
-    async function loginWithGoogle(credentialResponse: any){
-
-        const tokenGoogle = credentialResponse.credential;
-
-        try{
-            const response = await api.post("/authentication/login/google", {tokenGoogle: tokenGoogle})
-            const token = response.data.token;
-            localStorage.setItem("token", token)
-            navigate("/")
-            toast.success("Login realizado com sucesso")
-        }catch(error: any){
-            if(error.response?.status == 404){
-                setTokenGoogle(tokenGoogle);
-                setShowAuthModal(true)
-           }else{
-            toast.error("Erro interno. Por favor, tente novamente mais tarde")
-           }
         }
     }
 
@@ -110,7 +91,7 @@ export default function Login(){
                         <span className="text-gray-400 text-sm">ou</span>
                         <div className="flex-1 h-px bg-white/10"></div>
                     </div>
-                    <GoogleLogin onSuccess={loginWithGoogle} onError={() => toast.error("Falha ao abrir o google")} theme="filled_black" shape="rectangular"/>
+                    <GoogleLogin onSuccess={loginWithGoogle} onError={() => toast.error("Falha ao abrir o google")} theme="outline" shape="rectangular" logo_alignment="center"/>
                     <p className="text-center text-sm text-gray-400 mt-4"> Ainda não tem uma conta?{" "} <Link to="/register"><span className="text-green-500 hover:underline cursor-pointer">cadastre-se</span></Link>
                     </p>
                 </form>

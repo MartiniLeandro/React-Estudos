@@ -1,10 +1,12 @@
 import { ChartColumn, Fingerprint, LockKeyhole, Mail, ShieldCheck, User, Users } from "lucide-react";
 import AuthLayout from "../../components/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
-import GoogleIcon from "../../components/GoogleIcon";
 import { useState, type SubmitEvent } from "react";
 import api from "../../services/Api";
 import toast from "react-hot-toast";
+import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleAuth } from "../../hooks/useGoogleAuth";
+import { AuthModal } from "../../components/AuthModal";
 
 interface registerData {
     name: string,
@@ -19,6 +21,7 @@ export default function Register(){
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const navigate = useNavigate()
+    const {loginWithGoogle, showAuthModal, setShowAuthModal, tokenGoogle} = useGoogleAuth();
 
     const features = [
         {
@@ -125,10 +128,11 @@ export default function Register(){
                     <span className="text-gray-400 text-sm">ou</span>
                     <div className="flex-1 h-px bg-white/10"></div>
                 </div>
-                <button  type="button" className="w-full py-3 border border-white/10 rounded-lg hover:bg-white/5 transition cursor-pointer flex items-center justify-center gap-2">Cadastrar com Google<GoogleIcon/></button>
+                <GoogleLogin onSuccess={loginWithGoogle} onError={() => toast.error("Falha ao abrir o google")} theme="outline" shape="rectangular" logo_alignment="center"/>
                 <p className="text-center text-sm text-gray-400 mt-4"> Já tem uma conta?{" "} <Link to="/login"><span className="text-green-500 hover:underline cursor-pointer">Entrar</span></Link>
                 </p>
             </form>
+            <AuthModal openModal={showAuthModal} onClose={() => setShowAuthModal(false)} tokenGoogle={tokenGoogle}/>
         </AuthLayout>
     )
 }
