@@ -181,17 +181,17 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
     )
 
     if(exportLaunches) return (
-                 <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center">
-            <div className=" bg-[#121821] rounded-2xl border border-white/10 p-6 w-1/4 h-2/5 flex flex-col items-center justify-around">
-                <div className="flex flex-col items-center gap-3">
-                    <h2 className="text-3xl">Exportar lançamentos</h2>
-                    <p className="text-gray-400 text-center">Tem certeza que deseja exportar estes lançamentos? <br/>Obs: Será baixado um arquivo excel</p>     
+            <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center">
+                <div className=" bg-[#121821] rounded-2xl border border-white/10 p-6 w-1/4 h-2/5 flex flex-col items-center justify-around">
+                    <div className="flex flex-col items-center gap-3">
+                        <h2 className="text-3xl">Exportar lançamentos</h2>
+                        <p className="text-gray-400 text-center">Tem certeza que deseja exportar estes lançamentos? <br/>Obs: Será baixado um arquivo excel</p>     
+                    </div>
+                    <div className="gap-2.5 flex">
+                        <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer" onClick={onClose}>Cancelar</button>
+                        <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer bg-emerald-500/70" onClick={exportLaunchesFunction}>Exportar lançamentos</button>
+                    </div>
                 </div>
-                <div className="gap-2.5 flex">
-                    <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer" onClick={onClose}>Cancelar</button>
-                    <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer bg-emerald-500/70" onClick={exportLaunchesFunction}>Exportar lançamentos</button>
-                </div>
-            </div>
         </div>
     )
     return  (

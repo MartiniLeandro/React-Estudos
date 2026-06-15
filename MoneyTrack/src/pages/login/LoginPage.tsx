@@ -6,10 +6,13 @@ import toast from "react-hot-toast"
 import { ChartNoAxesColumnIncreasing, Lock, PieChart } from "lucide-react"
 import AuthLayout from "../../components/AuthLayout"
 import { GoogleLogin } from "@react-oauth/google"
+import { AuthModal } from "../../components/AuthModal"
 
 export default function Login(){
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [showAuthModal, setShowAuthModal] = useState(false)
+    const [tokenGoogle, setTokenGoogle] = useState("")
     const navigate = useNavigate()
 
     async function login(e: SubmitEvent){
@@ -52,8 +55,9 @@ export default function Login(){
             navigate("/")
             toast.success("Login realizado com sucesso")
         }catch(error: any){
-            if(error.response?.data?.message){
-                toast.error(error.response.data.message)
+            if(error.response?.status == 404){
+                setTokenGoogle(tokenGoogle);
+                setShowAuthModal(true)
            }else{
             toast.error("Erro interno. Por favor, tente novamente mais tarde")
            }
@@ -76,40 +80,42 @@ export default function Login(){
     ]
 
     return(
+        <>
+            <AuthLayout title={<>Bem-vindo de <span className="text-green-500">volta!</span></>} subtitle="Faça login para continuar gerenciando suas finanças" 
+                featuresItems={featuresDoLogin}
+            >
+                <h2 className="text-2xl font-semibold mb-2">
+                    Entrar na sua conta
+                </h2>
 
-        <AuthLayout title={<>Bem-vindo de <span className="text-green-500">volta!</span></>} subtitle="Faça login para continuar gerenciando suas finanças" 
-            featuresItems={featuresDoLogin}
-        >
-            <h2 className="text-2xl font-semibold mb-2">
-                Entrar na sua conta
-            </h2>
-
-            <p className="text-gray-400 mb-6">
-                Use suas credenciais para acessar o MoneyTrack
-            </p>
-
-            <form onSubmit={login} className="space-y-4">
-                <div>
-                    <label className="text-sm text-gray-400">E-mail</label>
-                    <input type="text" placeholder="seu@email.com" value={email} onChange={(e)=>setEmail(e.target.value)} className="w-full mt-1 px-4 py-3 bg-[#0B0F14] border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
-                </div>
-                <div>
-                    <label className="text-sm text-gray-400">Senha</label>
-                    <input type="password" placeholder="******" value={password} onChange={(e)=>setPassword(e.target.value)} className="w-full mt-1 px-4 py-3 bg-[#0B0F14] border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"/>
-                </div>
-                <div className="text-right">
-                    <a className="text-sm text-green-500 hover:underline cursor-pointer">Esqueceu sua senha</a>
-                </div>
-                <button type="submit" className="w-full py-3 bg-green-500 hover:bg-green-600 transition rounded-lg font-medium shadow-lg shadow-green-500/20 cursor-pointer">Entrar</button>
-                <div className="flex items-center gap-4 my-4">
-                    <div className="flex-1 h-px bg-white/10"></div>
-                    <span className="text-gray-400 text-sm">ou</span>
-                    <div className="flex-1 h-px bg-white/10"></div>
-                </div>
-                <GoogleLogin onSuccess={loginWithGoogle} onError={() => toast.error("Falha ao abrir o google")} theme="filled_black" shape="rectangular"/>
-                <p className="text-center text-sm text-gray-400 mt-4"> Ainda não tem uma conta?{" "} <Link to="/register"><span className="text-green-500 hover:underline cursor-pointer">cadastre-se</span></Link>
+                <p className="text-gray-400 mb-6">
+                    Use suas credenciais para acessar o MoneyTrack
                 </p>
-            </form> 
-    </AuthLayout>
+
+                <form onSubmit={login} className="space-y-4">
+                    <div>
+                        <label className="text-sm text-gray-400">E-mail</label>
+                        <input type="text" placeholder="seu@email.com" value={email} onChange={(e)=>setEmail(e.target.value)} className="w-full mt-1 px-4 py-3 bg-[#0B0F14] border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+                    </div>
+                    <div>
+                        <label className="text-sm text-gray-400">Senha</label>
+                        <input type="password" placeholder="******" value={password} onChange={(e)=>setPassword(e.target.value)} className="w-full mt-1 px-4 py-3 bg-[#0B0F14] border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                    </div>
+                    <div className="text-right">
+                        <a className="text-sm text-green-500 hover:underline cursor-pointer">Esqueceu sua senha</a>
+                    </div>
+                    <button type="submit" className="w-full py-3 bg-green-500 hover:bg-green-600 transition rounded-lg font-medium shadow-lg shadow-green-500/20 cursor-pointer">Entrar</button>
+                    <div className="flex items-center gap-4 my-4">
+                        <div className="flex-1 h-px bg-white/10"></div>
+                        <span className="text-gray-400 text-sm">ou</span>
+                        <div className="flex-1 h-px bg-white/10"></div>
+                    </div>
+                    <GoogleLogin onSuccess={loginWithGoogle} onError={() => toast.error("Falha ao abrir o google")} theme="filled_black" shape="rectangular"/>
+                    <p className="text-center text-sm text-gray-400 mt-4"> Ainda não tem uma conta?{" "} <Link to="/register"><span className="text-green-500 hover:underline cursor-pointer">cadastre-se</span></Link>
+                    </p>
+                </form>
+        </AuthLayout>
+        <AuthModal openModal={showAuthModal} onClose={() => setShowAuthModal(false)} tokenGoogle={tokenGoogle}/>
+    </>
     )
 }
