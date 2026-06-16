@@ -17,11 +17,11 @@ export default function Sidebar(){
             <Link to="/"><img src={logo} className='mb-5'/></Link>
             <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><House/> <Link to="/">Início</Link></div>
             <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><ReceiptText/> <Link to="/launches">Lançamentos</Link></div>
-            <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><ChartPie/> Categorias</div>
+            <div className="p-1.5 m-1 rounded-b-sm flex gap-1.5 mx-5"><ChartPie/> <Link to="/categories">Categorias</Link></div>
           </div>
           <div>
             <div className="bg-[#121821] border border-white/10 mb-6 mx-2.5 p-3 rounded-xl">
-              <p className='text-center'>{name} | {email}</p>
+              <p className='text-center'>{name} <br/> {email}</p>
             </div>
           </div>
         </div>

@@ -1,12 +1,12 @@
-import type { LucideIcon } from "lucide-react";
+import {type LucideIcon } from "lucide-react";
 import { formatCurrency } from "../pages/home/HomePage"
 
 interface Props {
   type?: string,
-  title: string,
+  title?: string,
   value?: number,
   icon?: LucideIcon
-  formatValue: boolean;
+  formatValue?: boolean;
   iconLaunchPage?: IconLaunchPage
 }
 
