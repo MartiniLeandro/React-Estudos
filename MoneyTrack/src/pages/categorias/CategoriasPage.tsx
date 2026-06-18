@@ -3,6 +3,7 @@ import CategoryCard from "../../components/CategoryCard"
 import Sidebar from "../../components/Sidebar"
 import api from "../../services/Api";
 import toast from "react-hot-toast";
+import { icons } from "lucide-react";
 
 
 interface CategoriesData {
@@ -46,6 +47,33 @@ export default function Categorias(){
             toast.error("Erro interno. Por favor, tente novamente mais tarde")
            }
         }
+    }
+
+    function colorCategory(color: string) {
+        return (
+            <div className="w-5 h-5 rounded-full shadow-sm" style={{backgroundColor: `${color}`}}></div>
+        )
+    }
+
+    function formatIconName(dbName: string) {
+        if (!dbName) return "";
+        
+        return dbName
+            .split(/[-_]/)
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join('');
+    }
+
+    function renderIcon(iconName: string, color: string) {
+        const formattedName = formatIconName(iconName);
+
+        const LucideIcon = icons[formattedName as keyof typeof icons];
+        
+        if (!LucideIcon) {
+            return <span className="text-gray-500">?</span>;
+        }
+
+        return <LucideIcon color={color} size={20} />;
     }
 
     return(
@@ -92,17 +120,16 @@ export default function Categorias(){
                         </tr>
                         </thead>
                         <tbody>
-                            <tr className="border border-white/5 hover:bg-white/10 transition">
-                                {categories.map(category => (
-                                    <div key={category.id}>
-                                        <td>{category.name}</td>
-                                        <td>{category.typeValue}</td>
-                                        <td>{category.color}</td>
-                                        <td>{category.icon}</td>
-                                        <td>ações</td>
-                                    </div>
-                                ))}
-                            </tr>
+                            {categories.map(category => (
+                                <tr className="border border-white/5 hover:bg-white/10 transition" key={category.id}>
+                                    <td className="py-4 pl-4">{category.name}</td>
+                                    <td>{category.typeValue}</td>
+                                    <td>{colorCategory(category.color)}</td>
+                                    <td>{renderIcon(category.icon, category.color)}</td>
+                                    <td>ações</td>
+                                </tr>
+                            ))} 
+
                         </tbody>
                     </table>
                 </div>
