@@ -4,6 +4,9 @@ import Sidebar from "../../components/Sidebar"
 import api from "../../services/Api";
 import toast from "react-hot-toast";
 import { icons, Lock, Pencil, Search, Trash2 } from "lucide-react";
+import * as LucideIcons from "lucide-react"
+import { categoryIcons } from "../../utils/CategoryIcon";
+import CategoryModal from "../../components/CategoryModal";
 
 
 interface CategoriesData {
@@ -27,6 +30,7 @@ export default function Categorias(){
     const [totalQuantity,setTotalQuantity] = useState<number>();
     const [expenseQuantity,setExpenseQuantity] = useState<number>();
     const [revenueQuantity,setRevenueQuantity] = useState<number>();
+    const [openModal, setOpenModal] = useState<boolean>(false);
 
     useEffect(() => {
         getCategoriesData()
@@ -79,6 +83,12 @@ export default function Categorias(){
         return <LucideIcon color={color} size={20} />;
     }
 
+    function handleCloseModal(){
+        if(openModal){
+            setOpenModal(false)
+        }
+    }
+
     return(
         <div className="flex w-full h-screen">
 
@@ -95,7 +105,7 @@ export default function Categorias(){
                         <p className="text-gray-400">Visualize e gerencia todas as categorias disponíveis no sistema.</p>
                     </div>
                     <div>
-                        <button className="bg-green-600 p-3 rounded-md cursor-pointer">+ Nova categoria</button>
+                        <button className="bg-green-600 p-3 rounded-md cursor-pointer" onClick={() => setOpenModal(true)}>+ Nova categoria</button>
                     </div>
                 </header>
 
@@ -127,9 +137,18 @@ export default function Categorias(){
                         </tr>
                         </thead>
                         <tbody>
-                            {categories.map(category => (
+                            {categories.map(category => {
+                                const correctName = category.icon.charAt(0).toUpperCase() + category.icon.slice(1);
+                                const typeLucideIcons = LucideIcons as Record<string, any>
+                                const Icon = categoryIcons[category.icon] || typeLucideIcons[correctName] || LucideIcons.HelpCircle;
+                                return (
                                 <tr className="border border-white/5 hover:bg-white/10 transition" key={category.id}>
-                                    <td className="py-4 pl-4">{category.name}</td>
+                                    <td className="py-4 pl-4">
+                                        <div className="flex items-center gap-2">
+                                        {Icon && <div className="p-0.5 border rounded-full" style={{borderColor: category.color, backgroundColor: `${category.color}15`}}><Icon style={{color: category.color}}/></div>}
+                                        <span>{category.name}</span>
+                                    </div>
+                                    </td>
                                     {category.typeValue == 'REVENUE' ? <td><span className="bg-green-950 p-1 text-green-400 rounded-md">Receita</span></td> : 
                                     <td><span className="bg-red-950 p-1 text-red-400 rounded-md">Despesa</span></td>}
                                     <td>{colorCategory(category.color)}</td>
@@ -142,14 +161,13 @@ export default function Categorias(){
                                         </div>
                                     </td>}
                                 </tr>
-                            ))} 
+                            )})} 
 
                         </tbody>
                     </table>
                 </div>
-            
-
             </div>
+            <CategoryModal openModal={openModal} closeModal={handleCloseModal}/>
         </div>
     )
 }
