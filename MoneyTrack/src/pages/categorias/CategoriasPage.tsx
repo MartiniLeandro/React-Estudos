@@ -31,6 +31,8 @@ export default function Categorias(){
     const [expenseQuantity,setExpenseQuantity] = useState<number>();
     const [revenueQuantity,setRevenueQuantity] = useState<number>();
     const [openModal, setOpenModal] = useState<boolean>(false);
+    const [deleteCategory, setDeleteCategory] = useState(false);
+    const [categoryData, setCategoryData] = useState<Category | null>(null)
 
     useEffect(() => {
         getCategoriesData()
@@ -86,6 +88,10 @@ export default function Categorias(){
     function handleCloseModal(){
         if(openModal){
             setOpenModal(false)
+            setCategoryData(null)
+        }
+        if(deleteCategory){
+            setDeleteCategory(false)
         }
     }
 
@@ -156,8 +162,8 @@ export default function Categorias(){
                                     {category.userId == null ? <td><div className="bg-white/6 border border-white/10 rounded-xl p-2 flex w-fit gap-1 text-[16px] items-center"><Lock width={20}/> Padrão do sistema</div></td> : 
                                     <td>
                                         <div className="flex gap-2.5 pl-9">
-                                            <div className="bg-white/6 rounded-xl p-2"><Pencil className="text-gray-200 cursor-pointer"/></div>
-                                            <div className="bg-white/6 rounded-xl p-2"><Trash2 className="cursor-pointer text-red-500"/></div>
+                                            <div className="bg-white/6 rounded-xl p-2" onClick={() => {setOpenModal(true); setCategoryData(category)}}><Pencil className="text-gray-200 cursor-pointer"/></div>
+                                            <div className="bg-white/6 rounded-xl p-2" onClick={() => {setOpenModal(true); setDeleteCategory(true)}}><Trash2 className="cursor-pointer text-red-500"/></div>
                                         </div>
                                     </td>}
                                 </tr>
@@ -167,7 +173,7 @@ export default function Categorias(){
                     </table>
                 </div>
             </div>
-            <CategoryModal openModal={openModal} closeModal={handleCloseModal}/>
+            <CategoryModal openModal={openModal} closeModal={handleCloseModal} deleteCategory={deleteCategory} categoryData={categoryData}/>
         </div>
     )
 }
