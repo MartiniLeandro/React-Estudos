@@ -56,7 +56,7 @@ export default function CategoryModal({openModal, closeModal, deleteCategory, ca
                 </div>
                 <div className="flex justify-end mt-auto gap-5">
                     <button className="border border-white/10 p-2 rounded-lg px-3 cursor-pointer" onClick={closeModal}>Cancelar</button>
-                    <button className="border border-white/10 p-2 rounded-lg px-3 cursor-pointer bg-green-600">Criar categoria</button>
+                    <button className="border border-white/10 p-2 rounded-lg px-3 cursor-pointer bg-green-600">{categoryData != null ? "Editar categoria" : "Criar categoria"}</button>
                 </div>
             </div>
         </div>
