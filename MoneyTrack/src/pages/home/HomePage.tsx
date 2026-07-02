@@ -2,11 +2,11 @@ import { useEffect, useState } from "react"
 import type { DashboardHome } from "../../types/DashboardHome";
 import { Wallet, ArrowDown, ArrowUp} from "lucide-react";
 import api from "../../services/Api";
-import DoughnutCategory from "../../components/DoughnutCategory";
+import {DoughnutCategory} from "../../components/Grapichs";
 import Card from "../../components/Card";
 import Sidebar from "../../components/Sidebar";
 import { Link } from "react-router-dom";
-import { colors } from "../../components/DoughnutCategory";
+import { colors } from "../../components/Grapichs";
 import { categoryIcons } from "../../utils/CategoryIcon";
 import { useProfileData } from "../../hooks/useProfileData";
 
@@ -15,7 +15,7 @@ export default function Home() {
   const [dashboardData, setDashboardData] = useState<DashboardHome>();
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [categoryType, setCategoryType] = useState<"revenue" | "expense">("revenue");
+  const [categoryType, setCategoryType] = useState<"revenue" | "expense">("expense");
   const {getProfileData, name} = useProfileData();
 
   useEffect(() => {

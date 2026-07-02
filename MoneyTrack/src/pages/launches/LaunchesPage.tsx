@@ -3,10 +3,11 @@ import Card from "../../components/Card"
 import Sidebar from "../../components/Sidebar"
 import api from "../../services/Api"
 import type { launchesFilter, LaunchesData, Category, Launch} from "../../types/LaunchesData"
-import { ArrowDown, ArrowUp, Download, Equal, FileText, Pencil, Search, Trash2} from "lucide-react"
+import { ArrowDown, ArrowUp, Download, Equal, Pencil, Search, SquareEqual, Trash2} from "lucide-react"
 import { formatCurrency, formatedDate } from "../home/HomePage"
 import { categoryIcons } from "../../utils/CategoryIcon"
 import LaunchModal from "../../components/LaunchModal"
+import { DoughnutTypeValue } from "../../components/Grapichs"
 
 export default function Launches(){
     const [launchesData, setLaunchesData] = useState<LaunchesData>();
@@ -44,6 +45,7 @@ export default function Launches(){
             const response = await api.get<LaunchesData>("user/launches/data", {params: filters, headers: {Authorization: `Bearer ${token}`}})
             const data:LaunchesData = response.data;
             setLaunchesData(data)
+            console.log(data)
         }catch(error: any){
             console.log(error)
         }
@@ -127,8 +129,8 @@ export default function Launches(){
                 <div className="flex">
                     <Card title="Receitas" value={launchesData?.typeValues.revenue} formatValue ={true} iconLaunchPage={{icon: ArrowUp, bgColor: "bg-emerald-500/10", color: "text-emerald-500"}}/>
                     <Card title="Despesas" value={launchesData?.typeValues.expense} formatValue ={true} iconLaunchPage={{icon: ArrowDown, bgColor: "bg-rose-500/10", color: "text-rose-500"}}/>
-                    <Card title="Saldo Total" value={launchesData?.totalValue} formatValue ={true} iconLaunchPage={{icon: Equal, bgColor: "bg-amber-500/10", color: "text-amber-500"}}/>
-                    <Card title="Qntd. Lançamentos" value={launchesData?.totalLaunches} formatValue ={false} iconLaunchPage={{icon: FileText, bgColor: "bg-blue-500/10", color: "text-blue-500"}}/> 
+                    <Card title="Saldo do período" value={launchesData?.totalValueByPeriodLaunches} formatValue ={true} iconLaunchPage={{icon: Equal, bgColor: "bg-amber-500/10", color: "text-amber-500"}}/>
+                    <Card title="Saldo Total" value={launchesData?.totalValue} formatValue ={true} iconLaunchPage={{icon: SquareEqual, bgColor: "bg-blue-500/10", color: "text-blue-500"}}/>
                 </div>
 
 
@@ -187,7 +189,7 @@ export default function Launches(){
                 {/*GRÁFICOS*/}
                     <div className="w-1/4 flex flex-col">
                         <div className="flex-1 bg-[#121821] rounded-xl border border-white/10 p-2.5 m-1">
-                            <p>gráfico 1</p>
+                            <DoughnutTypeValue/>
                         </div>
                         <div className="flex-1 bg-[#121821] rounded-xl border border-white/10 p-2.5 m-1">
                             <p>gráfico 2</p>

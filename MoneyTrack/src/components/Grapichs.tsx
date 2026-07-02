@@ -8,7 +8,7 @@ ChartJS.register(
   Legend
 )
 
-interface props {
+interface propsCategory {
     dashboardData?: DashboardHome,
     type: "revenue" | "expense"
 }
@@ -23,7 +23,7 @@ export const colors = [
         ]
 
 
-export default function DoughnutCategory({dashboardData, type}: props){
+export function DoughnutCategory({dashboardData, type}: propsCategory){
 
     const typeCategory = type === "revenue" ? dashboardData?.totalRevenueCategoriesMonth : dashboardData?.totalExpenseCategoriesMonth
 
@@ -62,5 +62,11 @@ export default function DoughnutCategory({dashboardData, type}: props){
 
     return (
         <Doughnut data={chartData} options={chartOptions}/>
+    )
+}
+
+export function DoughnutTypeValue(){
+    return(
+        <h1>teste</h1>
     )
 }

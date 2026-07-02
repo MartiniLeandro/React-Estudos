@@ -1,7 +1,7 @@
 export interface LaunchesData {
     launches: Launch[],
     typeValues: TypeValues,
-    totalLaunches: number,
+    totalValueByPeriodLaunches: number,
     totalValue: number,
     categoryTotal: CategoriesTotal[]
 }
