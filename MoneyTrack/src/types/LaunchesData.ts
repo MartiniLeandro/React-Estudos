@@ -3,7 +3,7 @@ export interface LaunchesData {
     typeValues: TypeValues,
     totalValueByPeriodLaunches: number,
     totalValue: number,
-    categoryTotal: CategoriesTotal[]
+    categoryTotals: CategoriesTotal[]
 }
 
 export interface Launch {

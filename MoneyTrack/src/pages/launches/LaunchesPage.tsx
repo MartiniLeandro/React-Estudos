@@ -7,7 +7,7 @@ import { ArrowDown, ArrowUp, Download, Equal, Pencil, Search, SquareEqual, Trash
 import { formatCurrency, formatedDate } from "../home/HomePage"
 import { categoryIcons } from "../../utils/CategoryIcon"
 import LaunchModal from "../../components/LaunchModal"
-import { DoughnutTypeValue } from "../../components/Grapichs"
+import { CategorySpendingChart, DoughnutTypeValue } from "../../components/Grapichs"
 
 export default function Launches(){
     const [launchesData, setLaunchesData] = useState<LaunchesData>();
@@ -188,10 +188,11 @@ export default function Launches(){
                 {/*GRÁFICOS*/}
                     <div className="w-1/4 flex flex-col">
                         <div className="flex-1 bg-[#121821] rounded-xl border border-white/10 p-2.5 m-1">
-                            <DoughnutTypeValue/>
+                            <h2 className="text-[18px] font-bold">Gastos por período</h2>
+                            <DoughnutTypeValue data={launchesData}/>
                         </div>
                         <div className="flex-1 bg-[#121821] rounded-xl border border-white/10 p-2.5 m-1">
-                            <p>gráfico 2</p>
+                            <CategorySpendingChart data={launchesData} />
                         </div>
                     </div>
 
