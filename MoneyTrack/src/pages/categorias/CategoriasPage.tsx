@@ -25,6 +25,11 @@ interface Category{
     userId: number
 }
 
+interface CategoryFilter{
+    name?: string
+    typeValue?: string
+}
+
 export default function Categorias(){
     const [categories, setCategories] = useState<Category[]>([])
     const [totalQuantity,setTotalQuantity] = useState<number>();
@@ -33,15 +38,27 @@ export default function Categorias(){
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [deleteCategory, setDeleteCategory] = useState(false);
     const [categoryData, setCategoryData] = useState<Category | null>(null)
+    const [name, setName] = useState<string>("");
+    const [categoryTypeValue, setCategoryTypeValue] = useState<string>("");
+    const [filters, setFilters] = useState<CategoryFilter>({})
+
 
     useEffect(() => {
-        getCategoriesData()
-    }, [])
+        getCategoriesData(filters)
+    }, [filters,categoryTypeValue])
 
-    async function getCategoriesData(){
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            setFilters(prevFilters => ({...prevFilters, name}))
+        },500)
+        return () => clearTimeout(delayDebounceFn)
+    }, [name])
+    
+    async function getCategoriesData(filters: CategoryFilter){
         const token = localStorage.getItem("token");
+        const correctedFilters = {...filters, typeValue: categoryTypeValue == "" ? undefined : categoryTypeValue}
         try{
-            const response = await api.get<CategoriesData>("/categories/data", {headers: {Authorization: `Bearer ${token}`}})
+            const response = await api.get<CategoriesData>("/categories/data", {params: correctedFilters,headers: {Authorization: `Bearer ${token}`}})
             const data = response.data;
             setCategories(data.categories);
             setTotalQuantity(data.TotalQuantity);
@@ -121,12 +138,14 @@ export default function Categorias(){
                 {/*FILTROS*/}
                 <div className="flex justify-between mt-3.5">
                     <div className="flex items-end justify-end bg-gray-950 p-1 rounded-md border border-white/10">
-                        <input type="text" placeholder="Buscar lançamento"/>
+                        <input type="text" placeholder="Buscar lançamento" value={name} onChange={(e) => setName(e.target.value)}/>
                         <Search/>
                     </div>              
 
-                    <select className="">
+                    <select className="bg-gray-950 p-1 rounded-md border border-white/10" onChange={(e) => setCategoryTypeValue(e.target.value.toUpperCase())}>
                         <option value="">Todas as opções</option>
+                        <option value="expense">Despesa</option>
+                        <option value="revenue">Receita</option>
                     </select>
                 </div>
 

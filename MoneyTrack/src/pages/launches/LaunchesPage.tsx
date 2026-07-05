@@ -45,7 +45,6 @@ export default function Launches(){
             const response = await api.get<LaunchesData>("user/launches/data", {params: filters, headers: {Authorization: `Bearer ${token}`}})
             const data:LaunchesData = response.data;
             setLaunchesData(data)
-            console.log(data)
         }catch(error: any){
             console.log(error)
         }
