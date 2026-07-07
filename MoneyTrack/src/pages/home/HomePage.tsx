@@ -79,7 +79,7 @@ export default function Home() {
           <div className="flex flex-1 gap-4 min-h-0">
 
             {/*LANÇAMENTOS */}
-            <div className="w-2/3 bg-[#121821] rounded-xl border border-white/10">
+            <div className="w-2/3 bg-[#121821] rounded-xl border border-white/10 overflow-y-hidden">
               <div className="flex justify-between m-3">
                 <p>Últimos lançamentos</p>
                 <Link to="/launches">Ver todos</Link>
@@ -116,7 +116,7 @@ export default function Home() {
             </div>
 
             {/*GRÁFICO */}
-            <div className="w-1/3 bg-[#121821] rounded-xl border border-white/10 flex flex-col gap-20">
+            <div className="w-1/3 bg-[#121821] rounded-xl border border-white/10 flex flex-col gap-20 overflow-y-hidden">
               <div className="flex justify-center gap-20 my-2.5">
                 <p className="text-2xl">Gastos por categoria</p>
                 <select value={categoryType} onChange={(e) => setCategoryType(e.target.value as "revenue" | "expense")} className="rounded-md border border-white/10 bg-transparent">

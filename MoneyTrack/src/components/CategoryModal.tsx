@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type JSX } from "react";
 import type { Category } from "../types/LaunchesData";
 import { categoryIcons } from "../utils/CategoryIcon";
+import { HelpCircle } from "lucide-react";
 
 interface Props{
     openModal: boolean,
@@ -11,19 +12,25 @@ interface Props{
 
 
 export default function CategoryModal({openModal, closeModal, deleteCategory, categoryData}: Props){
-    const[createCategory, setCreatedCategory] = useState<Partial<Category>>()
+    const[createCategory, setCreatedCategory] = useState<Partial<Category>>({})
+    const IconComponent = createCategory?.icon ? categoryIcons[createCategory.icon] : HelpCircle;
     
     useEffect(() => {
         if(categoryData){
-            setCreatedCategory({...categoryData})
+            setCreatedCategory({...categoryData, color:"#12b51d"})
         }else {
-            setCreatedCategory({})
+            setCreatedCategory({color:"#12b51d"})
         }
     },[categoryData])
 
     useEffect(() => {
         console.log(createCategory)
     },[createCategory])
+
+    const typeBadges: Record<string, JSX.Element> = {
+    REVENUE: <span className="bg-green-950 p-1 px-2.5 text-green-400 rounded-md">Receita</span>,
+    EXPENSE: <span className="bg-red-950 p-1 px-2.5 text-red-400 rounded-md">Despesa</span>,
+};
 
     if(!openModal) return;
 
@@ -44,7 +51,7 @@ export default function CategoryModal({openModal, closeModal, deleteCategory, ca
 
     return(
         <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center">
-            <div className=" bg-[#121821] rounded-2xl border border-white/10 p-6 w-1/3 h-2/3 flex flex-col">
+            <div className=" bg-[#121821] rounded-2xl border border-white/10 p-6 w-1/3 h-3/4 flex flex-col">
                 <div>
                     <h3 className="text-2xl">Nova categoria</h3>
                     <p className="text-gray-400">Preencha as informações para criar uma nova categoria</p>
@@ -74,16 +81,27 @@ export default function CategoryModal({openModal, closeModal, deleteCategory, ca
                                 })}
                             </div>
                     </div>
-                    <div className="border-2 col-span-2 flex flex-col">
-                            <label>Cor</label>
-                            <input type="color" name="" id="" />
+                    <div className="col-span-2 flex flex-col">
+                        <label className="mb-1.5">Cor</label>
+                        <div className="border border-white/10 rounded-lg p-2.5 flex items-center gap-3">
+                                <input 
+                                    type="color" value={createCategory?.color} onChange={(e) => setCreatedCategory(prev => ({...prev, color: e.target.value}))} className="w-8 h-8 cursor-pointer bg-transparent border-0 p-0 [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-md [&::-moz-color-swatch]:border-none[::-moz-color-swatch]:rounded-md"/>
+                                <p className="text-gray-400 font-medium text-sm tracking-wide">{(createCategory?.color?.toUpperCase())}</p>
+                        </div>
                     </div>
-                    <div className="border-2 col-span-2 ">
-                        prévia
+                    <div className="border border-white/10 col-span-2 bg-[#121821] flex items-center gap-1.5 p-3 rounded-lg">
+                        <div className="border p-4 rounded-full mr-3" style={{borderColor:createCategory?.color, backgroundColor:`${createCategory?.color}15`,color:createCategory.color}}><IconComponent/></div>
+                        <div>
+                            <h3 className="text-1x1 text-gray-400">Prévia da categoria</h3>
+                            <div className="flex items-center mt-1.5">
+                                <p className="text-[20px] mr-5">{createCategory?.name ? createCategory.name : "Nome"}</p>
+                                {typeBadges[createCategory?.typeValue || ""] || <span className="bg-gray-950 p-1 px-2.5 text-gray-400 rounded-md">Tipo</span>}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="flex justify-end mt-auto gap-5">
-                    <button className="border border-white/10 p-2 rounded-lg px-3 cursor-pointer" onClick={closeModal}>Cancelar</button>
+                    <button className="border border-white/10 p-2 rounded-lg px-3 cursor-pointer" onClick={() => {closeModal() ; setCreatedCategory({color:"#12b51d"})}}>Cancelar</button>
                     <button className="border border-white/10 p-2 rounded-lg px-3 cursor-pointer bg-green-600">{categoryData != null ? "Editar categoria" : "Criar categoria"}</button>
                 </div>
             </div>

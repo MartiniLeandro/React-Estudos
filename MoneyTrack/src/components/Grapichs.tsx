@@ -158,7 +158,7 @@ export function CategorySpendingChart({ data }: propsCategorySpending) {
     const sortedCategories = [...expenseCategories].sort((a, b) => b.totalValue - a.totalValue);
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full overflow-y-hidden">
             <h2 className="text-lg font-bold mb-4">Gastos por Categoria</h2>
             <div className="flex-1 overflow-y-auto space-y-4 pr-2">
                 {sortedCategories.map((category, index) => {

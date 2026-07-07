@@ -67,7 +67,7 @@ export default function Launches(){
     }
 
     return(
-        <div className="flex w-full h-screen">
+        <div className="flex w-full h-screen overflow-hidden">
             
             {/*SIDEBAR*/}
             <Sidebar/>
@@ -137,7 +137,7 @@ export default function Launches(){
                 <div className="flex flex-1">
 
                 {/*LANÇAMENTOS*/}
-                    <div className="w-3/4 bg-[#121821] rounded-xl border border-white/10 mr-1">
+                    <div className="w-3/4 bg-[#121821] rounded-xl border border-white/10 mr-1 overflow-y-auto">
                         <table className="w-full mt-3 table-fixed">
                             <thead>
                             <tr>
@@ -186,12 +186,12 @@ export default function Launches(){
                     </div>
 
                 {/*GRÁFICOS*/}
-                    <div className="w-1/4 flex flex-col">
+                    <div className="w-1/4 flex flex-col overflow-y-auto">
                         <div className="flex-1 bg-[#121821] rounded-xl border border-white/10 p-2.5 m-1">
                             <h2 className="text-[18px] font-bold">Gastos por período</h2>
                             <DoughnutTypeValue data={launchesData}/>
                         </div>
-                        <div className="flex-1 bg-[#121821] rounded-xl border border-white/10 p-2.5 m-1">
+                        <div className="flex-1 bg-[#121821] rounded-xl border border-white/10 p-2.5 m-1 overflow-y-hidden">
                             <CategorySpendingChart data={launchesData} />
                         </div>
                     </div>

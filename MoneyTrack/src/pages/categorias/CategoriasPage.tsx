@@ -150,7 +150,7 @@ export default function Categorias(){
                 </div>
 
                 {/*TABELA*/}
-                <div className="bg-[#121821] border border-white/10 rounded-xl overflow-hidden mt-6">
+                <div className="bg-[#121821] border border-white/10 rounded-xl overflow-auto mt-6 ">
                     <table className="w-full mt-3 table-fixed">
                         <thead>
                         <tr>
