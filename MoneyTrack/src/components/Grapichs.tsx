@@ -160,14 +160,14 @@ export function CategorySpendingChart({ data }: propsCategorySpending) {
     return (
         <div className="flex flex-col h-full overflow-y-hidden">
             <h2 className="text-lg font-bold mb-4">Gastos por Categoria</h2>
-            <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-4 pr-2">
                 {sortedCategories.map((category, index) => {
                     const percentage = (category.totalValue / totalExpenses) * 100;
                     const color = colors[index % colors.length];
 
                     return (
                         <div key={category.name}>
-                            <div className="flex justify-between items-baseline mb-1">
+                            <div className="flex justify-between items-baseline">
                                 <span className="text-sm text-gray-300">{category.name}</span>
                                 <span className="text-sm font-semibold">
                                     {formatCurrency(category.totalValue)}

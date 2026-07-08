@@ -3,7 +3,7 @@ import {
     BookCheck, BottleWine, Briefcase, Bus, Calculator, Camera, Car, 
     ChartLine, Clapperboard, Coffee, Coins, CreditCard, DollarSign, Droplet, 
     Dumbbell, Flame, Fuel, Gamepad, Gift, GraduationCap, HandCoins, 
-    Headphones, HeartPulse, House, Landmark, Laptop, Map, Music, PiggyBank, 
+    Headphones, HeartPulse, HelpCircle, House, Landmark, Laptop, Map, Music, PiggyBank, 
     Pill, Plane, Receipt, Scissors, Shirt, ShoppingBag, ShoppingCart, 
     Smartphone, Stethoscope, Store, Ticket, Tv, Users, Utensils, Wallet, 
     Wifi, Wrench, Zap 
@@ -45,6 +45,7 @@ export const categoryIcons: Record<string, any> = {
     "clapperboard": Clapperboard,
     "gamepad": Gamepad,
     "headphones": Headphones,
+    "helpCircle": HelpCircle,
     "laptop": Laptop,
     "map": Map,
     "music": Music,

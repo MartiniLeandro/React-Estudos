@@ -138,7 +138,7 @@ export default function Categorias(){
                 {/*FILTROS*/}
                 <div className="flex justify-between mt-3.5">
                     <div className="flex items-end justify-end bg-gray-950 p-1 rounded-md border border-white/10">
-                        <input type="text" placeholder="Buscar lançamento" value={name} onChange={(e) => setName(e.target.value)}/>
+                        <input type="text" placeholder="Buscar categoria" value={name} onChange={(e) => setName(e.target.value)}/>
                         <Search/>
                     </div>              
 
@@ -182,7 +182,7 @@ export default function Categorias(){
                                     <td>
                                         <div className="flex gap-2.5 pl-9">
                                             <div className="bg-white/6 rounded-xl p-2" onClick={() => {setOpenModal(true); setCategoryData(category)}}><Pencil className="text-gray-200 cursor-pointer"/></div>
-                                            <div className="bg-white/6 rounded-xl p-2" onClick={() => {setOpenModal(true); setDeleteCategory(true)}}><Trash2 className="cursor-pointer text-red-500"/></div>
+                                            <div className="bg-white/6 rounded-xl p-2" onClick={() => {setOpenModal(true); setDeleteCategory(true); setCategoryData(category)}}><Trash2 className="cursor-pointer text-red-500"/></div>
                                         </div>
                                     </td>}
                                 </tr>
@@ -192,7 +192,7 @@ export default function Categorias(){
                     </table>
                 </div>
             </div>
-            <CategoryModal openModal={openModal} closeModal={handleCloseModal} deleteCategory={deleteCategory} categoryData={categoryData}/>
+            <CategoryModal openModal={openModal} closeModal={handleCloseModal} deleteCategory={deleteCategory} categoryData={categoryData} getCategories={() => getCategoriesData(filters)}/>
         </div>
     )
 }
