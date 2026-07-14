@@ -7,6 +7,7 @@ import { icons, Lock, Pencil, Search, Trash2 } from "lucide-react";
 import * as LucideIcons from "lucide-react"
 import { categoryIcons } from "../../utils/CategoryIcon";
 import CategoryModal from "../../components/CategoryModal";
+import { LoadingModal } from "../../components/LoadingModal";
 
 
 interface CategoriesData {
@@ -41,6 +42,7 @@ export default function Categorias(){
     const [name, setName] = useState<string>("");
     const [categoryTypeValue, setCategoryTypeValue] = useState<string>("");
     const [filters, setFilters] = useState<CategoryFilter>({})
+    const [isVisible, setIsVisible] = useState<boolean>(false)
 
 
     useEffect(() => {
@@ -58,6 +60,7 @@ export default function Categorias(){
         const token = localStorage.getItem("token");
         const correctedFilters = {...filters, typeValue: categoryTypeValue == "" ? undefined : categoryTypeValue}
         try{
+            setIsVisible(true)
             const response = await api.get<CategoriesData>("/categories/data", {params: correctedFilters,headers: {Authorization: `Bearer ${token}`}})
             const data = response.data;
             setCategories(data.categories);
@@ -70,6 +73,8 @@ export default function Categorias(){
            }else{
             toast.error("Erro interno. Por favor, tente novamente mais tarde")
            }
+        }finally{
+            setIsVisible(false)
         }
     }
 
@@ -192,6 +197,7 @@ export default function Categorias(){
                     </table>
                 </div>
             </div>
+            <LoadingModal isVisible={isVisible}/>
             <CategoryModal openModal={openModal} closeModal={handleCloseModal} deleteCategory={deleteCategory} categoryData={categoryData} getCategories={() => getCategoriesData(filters)}/>
         </div>
     )

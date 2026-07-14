@@ -4,6 +4,7 @@ import { categoryIcons } from "../utils/CategoryIcon";
 import { HelpCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import api from "../services/Api";
+import { LoadingModal } from "./LoadingModal";
 
 interface Props{
     openModal: boolean,
@@ -16,6 +17,7 @@ interface Props{
 
 export default function CategoryModal({openModal, closeModal, deleteCategory, categoryData, getCategories}: Props){
     const[handleCategory, setHandleCategory] = useState<Partial<Category>>({})
+    const [isVisible, setIsVisible] = useState<boolean>(false)
     const IconComponent = (handleCategory?.icon && categoryIcons[handleCategory.icon]) || HelpCircle;
     
     useEffect(() => {
@@ -48,6 +50,7 @@ export default function CategoryModal({openModal, closeModal, deleteCategory, ca
 
         const token = localStorage.getItem("token")
         try{
+            setIsVisible(true)
             await api.post("/categories/create",handleCategory, {headers: {Authorization: `Bearer ${token}`}})
             await getCategories()
             closeModal()
@@ -59,6 +62,8 @@ export default function CategoryModal({openModal, closeModal, deleteCategory, ca
             }else{
                 toast.error("Erro interno. Por favor, tentar novamente mais tarde") 
             }
+        }finally{
+            setIsVisible(false)
         }
     }
 
@@ -76,6 +81,7 @@ export default function CategoryModal({openModal, closeModal, deleteCategory, ca
         const token = localStorage.getItem("token");
 
         try{
+            setIsVisible(true)
             await api.put(`/categories/update/${categoryData?.id}`, handleCategory, {headers: {Authorization: `Bearer ${token}`}})
             await getCategories()
             closeModal()
@@ -87,12 +93,15 @@ export default function CategoryModal({openModal, closeModal, deleteCategory, ca
             }else{
                 toast.error("Erro interno. Por favor, tentar novamente mais tarde") 
             }
+        }finally{
+            setIsVisible(false)
         }
     }
 
     async function deleteCategoryFunction(){
         const token = localStorage.getItem("token")
         try{
+            setIsVisible(true)
             await api.delete(`/categories/delete/${handleCategory.id}`, {headers: {Authorization: `Bearer ${token}`}})
             await getCategories()
             closeModal()
@@ -104,6 +113,8 @@ export default function CategoryModal({openModal, closeModal, deleteCategory, ca
             }else{
                 toast.error("Erro interno. Por favor, tentar novamente mais tarde") 
             }
+        }finally{
+            setIsVisible(false)
         }
     }
 
@@ -126,6 +137,7 @@ export default function CategoryModal({openModal, closeModal, deleteCategory, ca
                     <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer bg-red-600" onClick={deleteCategoryFunction}>Deletar categoria</button>
                 </div>
             </div>
+            <LoadingModal isVisible={isVisible}/>
         </div>
     )
 
@@ -185,6 +197,7 @@ export default function CategoryModal({openModal, closeModal, deleteCategory, ca
                     <button className="border border-white/10 p-2 rounded-lg px-3 cursor-pointer bg-green-600" onClick={handleSaveCategory}>{categoryData != null ? "Editar categoria" : "Criar categoria"}</button>
                 </div>
             </div>
+            <LoadingModal isVisible={isVisible}/>
         </div>
     )
 }

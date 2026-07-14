@@ -8,10 +8,12 @@ import AuthLayout from "../../components/AuthLayout"
 import { GoogleLogin } from "@react-oauth/google"
 import { AuthModal } from "../../components/AuthModal"
 import { useGoogleAuth } from "../../hooks/useGoogleAuth"
+import { LoadingModal } from "../../components/LoadingModal"
 
 export default function Login(){
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [isVisible, setIsVisible] = useState<boolean>(false)
     const navigate = useNavigate()
 
     const {loginWithGoogle, showAuthModal, setShowAuthModal, tokenGoogle} = useGoogleAuth();
@@ -30,6 +32,7 @@ export default function Login(){
         }
 
         try{
+            setIsVisible(true)
             const response = await api.post("/authentication/login",dadosLogin)
             const token = response.data.token;
             localStorage.setItem("token",token)
@@ -41,7 +44,8 @@ export default function Login(){
            }else{
             toast.error("Erro interno. Por favor, tente novamente mais tarde")
            }
-
+        }finally{
+            setIsVisible(false)
         }
     }
 
@@ -97,6 +101,7 @@ export default function Login(){
                 </form>
         </AuthLayout>
         <AuthModal openModal={showAuthModal} onClose={() => setShowAuthModal(false)} tokenGoogle={tokenGoogle}/>
+        <LoadingModal isVisible={isVisible}/>
     </>
     )
 }

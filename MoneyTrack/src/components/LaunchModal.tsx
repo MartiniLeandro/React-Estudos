@@ -4,6 +4,7 @@ import { getCategories } from "../pages/launches/LaunchesPage";
 import type { Category, Launch, launchesFilter } from "../types/LaunchesData";
 import toast from "react-hot-toast";
 import { ChevronDown, Lightbulb } from "lucide-react";
+import { LoadingModal } from "./LoadingModal";
 
 interface Props{
     open: boolean,
@@ -33,6 +34,8 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
     const [launchData, setLaunchData] = useState<LaunchRequest>({});
     const [filters, setFilters] = useState<launchesFilter>({})
     const [categories, setCategories] = useState<Category[]>();
+    const [isVisible, setIsVisible] = useState<boolean>(false)
+
     
     useEffect(() => {
         getCategories(filters,setCategories)
@@ -85,6 +88,7 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
         
         const token = localStorage.getItem("token")
         try{
+            setIsVisible(true)
             await api.post<LaunchResponse>('/user/launches/create', launchData, {headers: {Authorization: `Bearer ${token}`}})
             await getLaunches()
             onClose()
@@ -96,6 +100,8 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
             }else{
                 toast.error("Erro interno. Por favor, tentar novamente mais tarde") 
             }
+        }finally{
+            setIsVisible(false)
         }
     }
 
@@ -107,6 +113,7 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
 
         const token = localStorage.getItem("token")
         try{
+            setIsVisible(true)
             await api.put<LaunchResponse>(`/user/launches/update/${launch?.id}`,launchData, {headers: {Authorization: `Bearer ${token}`}})
             await getLaunches()
             onClose()
@@ -117,6 +124,8 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
             }else{
                 toast.error("Erro interno. Por favor, tentar novamente mais tarde") 
             }
+        }finally{
+            setIsVisible(false)
         }
     }
 
@@ -128,18 +137,22 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
 
         const token = localStorage.getItem("token")
         try{
+            setIsVisible(true)
             await api.delete(`user/launches/delete/${launch?.id}`, {headers: {Authorization: `Bearer ${token}`}})
             await getLaunches()
             onClose()
             toast.success("Lançamento excluido com sucesso")
         }catch(error: any){
             console.log(error.response.data)
+        }finally{
+            setIsVisible(false)
         }
     }
 
     async function exportLaunchesFunction(){
         const token = localStorage.getItem("token");
         try{
+            setIsVisible(true)
             const response = await api.get("user/launches/export", {params: launchesFilter ,responseType: 'blob' ,headers: {Authorization: `Bearer ${token}`}})
             const blob = new Blob([response.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})
             const urlTemporaria = window.URL.createObjectURL(blob);
@@ -160,6 +173,8 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
 
         }catch(error:any){
             toast.error("Não foi possível gerar o arquivo. Tente novamente")
+        }finally{
+            setIsVisible(false)
         }
     }
 
@@ -177,6 +192,7 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
                     <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer bg-red-600" onClick={deleteLaunch}>Deletar lançamento</button>
                 </div>
             </div>
+            <LoadingModal isVisible={isVisible}/>
         </div>
     )
 
@@ -192,7 +208,8 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
                         <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer bg-emerald-500/70" onClick={exportLaunchesFunction}>Exportar lançamentos</button>
                     </div>
                 </div>
-        </div>
+                <LoadingModal isVisible={isVisible}/>
+            </div>
     )
     return  (
         <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center">
@@ -272,6 +289,7 @@ export default function LaunchModal({open, onClose, launch, getLaunches, deleteM
                 </div>
 
             </div>
+            <LoadingModal isVisible={isVisible}/>
         </div>
     )
 }

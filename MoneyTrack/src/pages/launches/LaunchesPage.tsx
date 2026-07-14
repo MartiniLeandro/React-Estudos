@@ -8,6 +8,7 @@ import { formatCurrency, formatedDate } from "../home/HomePage"
 import { categoryIcons } from "../../utils/CategoryIcon"
 import LaunchModal from "../../components/LaunchModal"
 import { CategorySpendingChart, DoughnutTypeValue } from "../../components/Grapichs"
+import { LoadingModal } from "../../components/LoadingModal"
 
 export default function Launches(){
     const [launchesData, setLaunchesData] = useState<LaunchesData>();
@@ -18,6 +19,7 @@ export default function Launches(){
     const [launchData, setLaunchData] = useState<Launch | null>(null)
     const [searchDescription, setSearchDescription] = useState<string>("")
     const [exportModal, setExportModal] = useState(false);
+    const [isVisible, setIsVisible] = useState<boolean>(false)
 
     useEffect(() => {
         getLaunchesData(filters)
@@ -42,11 +44,14 @@ export default function Launches(){
         const token = localStorage.getItem("token")
         filters.categoryId = filters.categoryId == 0 ? undefined : filters.categoryId
         try{
+            setIsVisible(true)
             const response = await api.get<LaunchesData>("user/launches/data", {params: filters, headers: {Authorization: `Bearer ${token}`}})
             const data:LaunchesData = response.data;
             setLaunchesData(data)
         }catch(error: any){
             console.log(error)
+        }finally{
+            setIsVisible(false)
         }
     }
 
@@ -201,6 +206,7 @@ export default function Launches(){
             
                 </div >
             </div>
+            <LoadingModal isVisible={isVisible}/>
         </div>
     )
 }

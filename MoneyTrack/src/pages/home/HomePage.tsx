@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { colors } from "../../components/Grapichs";
 import { categoryIcons } from "../../utils/CategoryIcon";
 import { useProfileData } from "../../hooks/useProfileData";
+import { LoadingModal } from "../../components/LoadingModal";
 
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [categoryType, setCategoryType] = useState<"revenue" | "expense">("expense");
+  const [isVisible, setIsVisible] = useState<boolean>(false)
   const {getProfileData, name} = useProfileData();
 
   useEffect(() => {
@@ -29,6 +31,7 @@ export default function Home() {
   async function getDadosDashboard(selectedYear:number, selectedMonth:number){
     const token = localStorage.getItem("token")
     try{
+        setIsVisible(true)
         selectedYear = year
         selectedMonth = month
         const response = await api.get<DashboardHome>(`/user/launches/dashboard?year=${selectedYear}&month=${selectedMonth}`, {headers: {Authorization: `Bearer ${token}`}});
@@ -37,6 +40,8 @@ export default function Home() {
         setDashboardData(dataResponse);
     }catch(error){
       console.log(error)
+    }finally{
+      setIsVisible(false)
     }
   }
 
@@ -143,6 +148,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <LoadingModal isVisible={isVisible}/>
       </div>
     )
 }

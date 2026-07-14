@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleAuth } from "../../hooks/useGoogleAuth";
 import { AuthModal } from "../../components/AuthModal";
+import { LoadingModal } from "../../components/LoadingModal";
 
 interface registerData {
     name: string,
@@ -20,6 +21,7 @@ export default function Register(){
     const [cpf,setCpf] = useState("");
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
+    const [isVisible,setIsVisible] = useState<boolean>(false)
     const navigate = useNavigate()
     const {loginWithGoogle, showAuthModal, setShowAuthModal, tokenGoogle} = useGoogleAuth();
 
@@ -63,6 +65,7 @@ export default function Register(){
         }
 
         try{
+            setIsVisible(true)
             await api.post("/authentication/register", dadosRegister)
             toast.success("Usuário cadastrado com sucesso")
             navigate("/login")
@@ -72,10 +75,14 @@ export default function Register(){
            }else{
             toast.error("Erro interno. Por favor, tente novamente mais tarde")
            }
+        }finally{
+            setIsVisible(false)
         }
     }
 
     return(
+        <>
+        
         <AuthLayout 
             title={<>Crie a sua conta e <span className="text-green-500">comece agora!</span></>}
             subtitle="É rápido, fácil e gratuito. Organize agora suas finanças de forma inteligente"
@@ -133,6 +140,8 @@ export default function Register(){
                 </p>
             </form>
             <AuthModal openModal={showAuthModal} onClose={() => setShowAuthModal(false)} tokenGoogle={tokenGoogle}/>
-        </AuthLayout>
+            </AuthLayout>
+            <LoadingModal isVisible={isVisible}/>
+        </>
     )
 }

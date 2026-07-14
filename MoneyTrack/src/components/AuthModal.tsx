@@ -3,6 +3,7 @@ import { useState } from "react";
 import api from "../services/Api";
 import toast from "react-hot-toast";
 import {useNavigate } from "react-router-dom";
+import { LoadingModal } from "./LoadingModal";
 
 interface modalProps{
     openModal:boolean;
@@ -13,6 +14,7 @@ interface modalProps{
 export function AuthModal({openModal, onClose, tokenGoogle}: modalProps){
     const [cpf, setCpf] = useState("")
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     async function registerGoogle(){
 
@@ -23,6 +25,7 @@ export function AuthModal({openModal, onClose, tokenGoogle}: modalProps){
 
         try{
             const response = await api.post("/authentication/register/google", {tokenGoogle: tokenGoogle, cpf: cpf})
+            setIsLoading(true)
             localStorage.setItem("token", response.data.token)
             toast.success("Conta criada com sucesso")
             onClose();
@@ -34,6 +37,8 @@ export function AuthModal({openModal, onClose, tokenGoogle}: modalProps){
             } else {
                 toast.error("Erro interno. Por favor, tente novamente.");
             }
+        }finally{
+            setIsLoading(false)
         }
     }
 
@@ -54,6 +59,7 @@ export function AuthModal({openModal, onClose, tokenGoogle}: modalProps){
                         <button className="border border-white/10 px-2.5 py-2.5 rounded-sm cursor-pointer bg-emerald-500/70" onClick={registerGoogle}>Finalizar cadastro</button>
                     </div>
                 </div>
+                <LoadingModal isVisible={isLoading}/>
         </div>
     )
 }
