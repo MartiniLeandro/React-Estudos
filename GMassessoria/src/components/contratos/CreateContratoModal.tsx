@@ -105,7 +105,7 @@ export default function CreateContratoModal({ isOpen, onClose, onSuccess, defaul
     try {
       const response = await alunosService.createAluno({
         nome: novoAlunoNome,
-        telefone: novoAlunoTelefone || null,
+        telefone: novoAlunoTelefone || '',
         status: 'ATIVO'
       });
       toast.success('Aluno criado com sucesso!');
@@ -142,7 +142,7 @@ export default function CreateContratoModal({ isOpen, onClose, onSuccess, defaul
       toast.success('Contrato criado com sucesso!');
       if (onSuccess) onSuccess();
       else onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao criar contrato:', error);
       toast.error(error.response?.data?.message || 'Erro ao criar contrato.');
     } finally {

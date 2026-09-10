@@ -1,4 +1,4 @@
-import { FiSearch, FiChevronDown, FiFilter, FiRefreshCw } from 'react-icons/fi';
+import { FiSearch, FiRefreshCw } from 'react-icons/fi';
 import SearchableSelect from '../common/SearchableSelect';
 
 interface FinanceiroFiltersProps {

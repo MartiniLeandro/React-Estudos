@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FiChevronDown, FiChevronUp, FiPhone, FiCalendar, FiFileText, FiEdit2, FiPlus } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp, FiCalendar, FiFileText } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import EditAlunoModal from './EditAlunoModal';
 import CreateContratoModal from '../contratos/CreateContratoModal';

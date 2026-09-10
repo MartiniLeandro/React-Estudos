@@ -1,4 +1,4 @@
-import { FiX, FiAlertTriangle } from 'react-icons/fi';
+import { FiAlertTriangle } from 'react-icons/fi';
 
 interface ConfirmActionModalProps {
   isOpen: boolean;

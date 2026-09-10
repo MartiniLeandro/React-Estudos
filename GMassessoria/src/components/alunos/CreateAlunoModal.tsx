@@ -1,4 +1,4 @@
-import { FiX, FiUser, FiSave, FiChevronDown, FiUploadCloud } from 'react-icons/fi';
+import { FiX, FiSave, FiUploadCloud } from 'react-icons/fi';
 import { useState, useRef } from 'react';
 import { alunosService } from '../../services/alunosService';
 import toast from 'react-hot-toast';
@@ -38,7 +38,7 @@ export default function CreateAlunoModal({ isOpen, onClose, onSuccess }: CreateA
     try {
       await alunosService.createAluno({
         nome,
-        telefone: telefone || null,
+        telefone: telefone || '',
         status,
       }, imagemFile || undefined);
       

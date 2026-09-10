@@ -1,4 +1,4 @@
-import { FiX, FiUser, FiSave, FiChevronDown } from 'react-icons/fi';
+import { FiX, FiSave } from 'react-icons/fi';
 import { useState, useEffect, useRef } from 'react';
 import { alunosService } from '../../services/alunosService';
 import { getImageUrl } from '../../utils/imageUrl';
@@ -46,7 +46,7 @@ export default function EditAlunoModal({ isOpen, onClose, student, onSuccess }: 
       setLoading(true);
       await alunosService.updateAluno(student.id, {
         nome: name,
-        telefone: phone || null,
+        telefone: phone || '',
         status: status.toUpperCase() as 'ATIVO' | 'INATIVO' | 'PAUSADO',
       }, imagemFile || undefined);
       if (onSuccess) onSuccess();

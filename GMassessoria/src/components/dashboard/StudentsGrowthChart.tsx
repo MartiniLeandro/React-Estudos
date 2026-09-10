@@ -1,4 +1,3 @@
-import { FiChevronDown } from 'react-icons/fi';
 import type { EvolucaoAlunosDTO } from '../../services/dashboardService';
 import SearchableSelect from '../common/SearchableSelect';
 

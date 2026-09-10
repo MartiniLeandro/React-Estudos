@@ -1,4 +1,4 @@
-import { FiX, FiInfo, FiDownload, FiCheckCircle, FiClock, FiAlertCircle, FiPhone, FiExternalLink } from 'react-icons/fi';
+import { FiX, FiCheckCircle, FiAlertCircle, FiPhone, FiExternalLink } from 'react-icons/fi';
 import type { ContratoDetalhesDTO } from '../../services/contratosService';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';

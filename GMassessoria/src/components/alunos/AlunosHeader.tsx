@@ -1,4 +1,4 @@
-import { FiSearch, FiPlus } from 'react-icons/fi';
+import { FiPlus } from 'react-icons/fi';
 
 interface AlunosHeaderProps {
   onOpenModal: () => void;

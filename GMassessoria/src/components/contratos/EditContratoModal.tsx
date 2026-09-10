@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FiX, FiSave, FiChevronDown } from 'react-icons/fi';
+import { FiX, FiSave } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { contratosService } from '../../services/contratosService';
 import SearchableSelect from '../common/SearchableSelect';
@@ -17,7 +17,7 @@ export default function EditContratoModal({ isOpen, onClose, contrato, onSuccess
   const [statusContrato, setStatusContrato] = useState('ATIVO');
   const [motivoDesconto, setMotivoDesconto] = useState('');
 
-  const [fetching, setFetching] = useState(false);
+
 
   useEffect(() => {
     if (contrato && isOpen) {
