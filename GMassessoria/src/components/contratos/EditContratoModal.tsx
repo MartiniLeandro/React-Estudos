@@ -16,8 +16,7 @@ export default function EditContratoModal({ isOpen, onClose, contrato, onSuccess
   const [formaPagamento, setFormaPagamento] = useState('PIX');
   const [statusContrato, setStatusContrato] = useState('ATIVO');
   const [motivoDesconto, setMotivoDesconto] = useState('');
-
-
+  const [, setFetching] = useState(false);
 
   useEffect(() => {
     if (contrato && isOpen) {

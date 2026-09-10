@@ -1,4 +1,4 @@
-import { FiX, FiSave } from 'react-icons/fi';
+import { FiX, FiSave, FiUser } from 'react-icons/fi';
 import { useState, useEffect, useRef } from 'react';
 import { alunosService } from '../../services/alunosService';
 import { getImageUrl } from '../../utils/imageUrl';
