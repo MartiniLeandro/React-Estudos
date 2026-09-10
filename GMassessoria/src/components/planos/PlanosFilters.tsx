@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { FiSearch, FiRefreshCw, FiChevronDown } from 'react-icons/fi';
+import { FiSearch, FiRefreshCw } from 'react-icons/fi';
 import SearchableSelect from '../common/SearchableSelect';
 
 export interface PlanoFiltros {

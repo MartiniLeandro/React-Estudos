@@ -74,7 +74,7 @@ export default function Planos() {
   const prevFiltros = useRef(filtros);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout>;
 
     if (prevFiltros.current === filtros) {
       fetchDados();

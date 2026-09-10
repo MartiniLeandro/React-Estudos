@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FiDownload, FiChevronDown, FiChevronUp, FiPower } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp, FiPower } from 'react-icons/fi';
 import EditPlanoModal from './EditPlanoModal';
 import ConfirmActionModal from '../alunos/ConfirmActionModal';
 import type { PlanoResponseListagemDTO } from '../../services/planosService';

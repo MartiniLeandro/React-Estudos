@@ -4,7 +4,6 @@ import {
   FiHome, 
   FiUsers, 
   FiCreditCard, 
-  FiSettings, 
   FiLogOut, 
   FiChevronDown, 
   FiBook
@@ -51,7 +50,7 @@ export default function Sidebar() {
           <NavLink 
             to="/planos"
             end
-            onClick={(e) => {
+            onClick={() => {
               if (!planosOpen) setPlanosOpen(true);
             }}
             className={({ isActive }) => 

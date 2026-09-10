@@ -64,7 +64,7 @@ export default function Financeiro() {
   const prevSearchName = useRef(searchName);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout>;
 
     if (searchName !== prevSearchName.current) {
       timeoutId = setTimeout(() => {

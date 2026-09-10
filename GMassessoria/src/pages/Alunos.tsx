@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import AlunosHeader from '../components/alunos/AlunosHeader';
 import AlunosCards from '../components/alunos/AlunosCards';
 import AlunosFilters from '../components/alunos/AlunosFilters';
@@ -112,7 +112,7 @@ export default function Alunos() {
   const prevFiltros = useRef(filtros);
 
   useEffect(() => {
-    let timerId: NodeJS.Timeout;
+    let timerId: ReturnType<typeof setTimeout>;
 
     if (prevFiltros.current === filtros) {
       fetchDados();

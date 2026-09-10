@@ -1,4 +1,4 @@
-import { FiChevronDown, FiChevronUp, FiCalendar, FiClock, FiCreditCard, FiActivity, FiEdit2, FiFileText, FiPower, FiPlay, FiRefreshCw, FiMoreVertical } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp, FiCalendar, FiCreditCard, FiActivity, FiEdit2, FiFileText, FiPower, FiPlay, FiRefreshCw } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import EditContratoModal from '../contratos/EditContratoModal';

@@ -1,4 +1,4 @@
-import { FiUsers, FiCheckCircle, FiLayers, FiDollarSign } from 'react-icons/fi';
+import { FiUsers, FiCheckCircle, FiDollarSign } from 'react-icons/fi';
 import type { PlanoCardsDTO } from '../../services/planosService';
 
 interface PlanosCardsProps {

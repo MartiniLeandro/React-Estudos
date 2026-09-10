@@ -1,4 +1,4 @@
-import { FiX, FiSave, FiChevronDown } from 'react-icons/fi';
+import { FiX, FiSave } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { planosService } from '../../services/planosService';
 import toast from 'react-hot-toast';

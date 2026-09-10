@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { FiMoreVertical, FiChevronDown, FiChevronLeft, FiChevronRight, FiDownload, FiChevronUp } from 'react-icons/fi';
+import { FiMoreVertical, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import financeiroService, { type ListagemFaturasDTO } from '../../services/financeiroService';
 import ConfirmActionModal from '../alunos/ConfirmActionModal';
 import toast from 'react-hot-toast';
