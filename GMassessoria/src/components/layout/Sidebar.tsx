@@ -30,7 +30,7 @@ export default function Sidebar() {
     <aside className="w-60 bg-[#050505] border-r border-white/5 flex flex-col h-full flex-shrink-0">
       {}
       <div className="pt-6 pb-2 px-6 flex flex-col items-center border-b border-white/5">
-        <img src="/logo.png" alt="GM Assessoria" className="w-36 object-contain" />
+        <img src="/logo.png" alt="Leandro Martini" className="w-36 object-contain" />
       </div>
 
       {}
@@ -91,10 +91,6 @@ export default function Sidebar() {
                   <div className="w-1 h-1 rounded-full bg-current"></div>
                   Especial
                 </NavLink>
-                <NavLink to="/planos/personal" className={subNavLinkClass}>
-                  <div className="w-1 h-1 rounded-full bg-current"></div>
-                  Personal Trainer
-                </NavLink>
               </div>
             </div>
           </div>
@@ -111,7 +107,7 @@ export default function Sidebar() {
         <Link 
           to="/login"
           onClick={() => {
-            localStorage.removeItem('@GMAssessoria:token');
+            localStorage.removeItem('@LeandroMartini:token');
             localStorage.removeItem('token');
           }}
           className="flex items-center gap-3 px-3 py-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"

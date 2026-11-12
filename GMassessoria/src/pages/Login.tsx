@@ -23,7 +23,7 @@ export default function Login() {
       const token = response.data.token || response.data.accessToken;
 
       if (token) {
-        localStorage.setItem('@GMAssessoria:token', token);
+        localStorage.setItem('@LeandroMartini:token', token);
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       }
 
@@ -54,7 +54,7 @@ export default function Login() {
         <div className="flex flex-col items-center mb-5">
           <img
             src="/logo.png"
-            alt="Gabriel Martini Assessoria Esportiva"
+            alt="Leandro Martini"
             className="w-48 md:w-56 object-contain mx-auto"
           />
           <h1 className="text-lg md:text-xl font-medium text-zinc-100 mb-1">Acesso ao Sistema</h1>
@@ -109,7 +109,7 @@ export default function Login() {
 
         <div className="mt-5 text-center border-t border-white/5 pt-4">
           <p className="text-[10px] text-zinc-600">
-            © 2024 Gabriel Martini Assessoria Esportiva. Todos os direitos reservados.
+            © 2024 Leandro Martini. Todos os direitos reservados.
           </p>
         </div>
       </div>

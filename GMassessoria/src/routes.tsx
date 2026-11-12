@@ -8,10 +8,9 @@ import Planos from "./pages/Planos/Planos";
 import Nutricao from "./pages/Planos/Nutricao";
 import Corrida from "./pages/Planos/Corrida";
 import Especial from "./pages/Planos/Especial";
-import Personal from "./pages/Planos/Personal";
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  const token = localStorage.getItem('@GMAssessoria:token') || localStorage.getItem('token');
+  const token = localStorage.getItem('@LeandroMartini:token') || localStorage.getItem('token');
   if (!token) {
     return <Navigate to="/login" replace />;
   }
@@ -34,7 +33,6 @@ const routes = createBrowserRouter([
       { path: "/planos/nutricao", element: <Nutricao /> },
       { path: "/planos/corrida", element: <Corrida /> },
       { path: "/planos/especial", element: <Especial /> },
-      { path: "/planos/personal", element: <Personal /> },
       { path: "/financeiro", element: <Financeiro /> }
     ]
   },
