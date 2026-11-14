@@ -18,8 +18,8 @@ export default function PlanDistributionChart({ data, loading }: PlanDistributio
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   };
 
-  const getColor = (plano: string) => {
-    switch (plano.toUpperCase()) {
+  const getColor = (plano: string | null) => {
+    switch (plano?.toUpperCase()) {
       case 'CORRIDA': return 'bg-red-500';
       case 'NUTRICAO':
       case 'NUTRIÇÃO': return 'bg-blue-500';
@@ -62,7 +62,7 @@ export default function PlanDistributionChart({ data, loading }: PlanDistributio
                   >
                     {data.map((entry, index) => {
                       let color = '#71717A';
-                      switch (entry.plano.toUpperCase()) {
+                      switch (entry.plano?.toUpperCase()) {
                         case 'CORRIDA': color = '#EF4444'; break;
                         case 'NUTRICAO':
                         case 'NUTRIÇÃO': color = '#3B82F6'; break;
